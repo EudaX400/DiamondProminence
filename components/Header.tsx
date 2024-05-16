@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import styles from "../styles/components/header.module.scss";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -8,47 +9,21 @@ const Header: React.FC = () => {
     router.pathname === pathname;
 
   let left = (
-    <div className="left">
+    <div className={styles.left}>
       <Link href="/">
-        <a className="bold" data-active={isActive("/")}>
+        <a className={styles.bold} data-active={isActive("/")}>
           Feed
         </a>
       </Link>
-      <style jsx>{`
-        .bold {
-          font-weight: bold;
-        }
-
-        a {
-          text-decoration: none;
-          color: #000;
-          display: inline-block;
-        }
-
-        .left a[data-active="true"] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-      `}</style>
     </div>
   );
 
   let right = null;
 
   return (
-    <nav>
+    <nav className={styles.nav}>
       {left}
       {right}
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-        }
-      `}</style>
     </nav>
   );
 };
