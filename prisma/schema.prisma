@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model Tournament {
+  id             String      @default(cuid()) @id @map(name: "tournament_pkey")
+  title          String
+  numPlayers     Int
+  description    String?
+  private        Boolean     @default(false)
+  privatePassword String?
+  owner          PrimeUser?  @relation("OwnerTournaments",fields: [ownerId], references: [id])
+  ownerId        String?
+  category       String?
+  participants   String?
+  createdAt      DateTime    @default(now()) @map(name: "created_at")
+  finishedAt     DateTime
+
+  User       UserTournament[]
+  PrimeUser      PrimeUserTournament[]
+}
+
+model User {
+  id             String    @default(cuid()) @id @map(name: "user_pkey")
+  name           String?
+  lastName       String?
+  email          String?   @unique @map(name: "user_email_key")
+  country        String?
+  password       String?
+  position       String?
+  createdAt      DateTime  @default(now()) @map(name: "created_at")
+  username       String?   @unique  @map(name: "user_username_key")
+
+  tournaments    UserTournament[]
+
+  @@map(name: "users")
+}
+
+model PrimeUser {
+  id             String    @default(cuid()) @id @map(name: "prime_user_pkey")
+  name           String?
+  lastName       String?
+  email          String?   @unique @map(name: "prime_user_email_key")
+  country        String?
+  password       String?
+  position       String?
+  createdAt      DateTime  @default(now()) @map(name: "created_at")
+  username       String?   @unique @map(name: "prime_user_username_key")
+
+  createdTournaments Tournament[] @relation("OwnerTournaments")
+  tournaments PrimeUserTournament[]
+
+  @@map(name: "prime_users")
+}
+
+model UserTournament {
+  userId         String
+  tournamentId   String
+  user           User       @relation(fields: [userId], references: [id])
+  tournament     Tournament @relation(fields: [tournamentId], references: [id])
+
+  @@id([userId, tournamentId])
+}
+model PrimeUserTournament {
+  primeUserId    String
+  tournamentId   String
+  primeUser      PrimeUser   @relation(fields: [primeUserId], references: [id])
+  tournament     Tournament  @relation(fields: [tournamentId], references: [id])
+
+  @@id([primeUserId, tournamentId])
+}
