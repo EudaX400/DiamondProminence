@@ -28,7 +28,7 @@
     return (
       <Layout>
         <div className={styles.post}>
-          <h1>Public Feed</h1>
+          <h1>Diamnod Prominence</h1>
           <main>
             {props.feed.map((post) => (
               <div key={post.id} className={styles.post}>
