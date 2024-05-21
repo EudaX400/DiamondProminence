@@ -1,22 +1,19 @@
 .section {
-    background-color: #1e40af; 
     min-height: 100vh; 
-    padding-top: 5rem; 
+    padding-top: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
   
   .container {
     max-width: 100%; 
-    padding-left: 1.5rem; 
-    padding-right: 1.5rem; 
-    padding-top: 3rem; 
-    padding-bottom: 3rem; 
     height: 100%; 
-    display: flex; 
-    justify-content: center; 
-    align-items: center; 
+    display: flex;
+    justify-content: center;
   }
   
   .form_wrapper {
+    
     @media (min-width: 768px) {
       width: 66.666667%; 
     }
@@ -24,9 +21,5 @@
       width: 41.666667%; 
     }
     background-color: #ffffff; 
-    padding-left: 2rem; 
-    padding-right: 2rem; 
-    padding-top: 2.5rem; 
-    padding-bottom: 2.5rem; 
   }
   
