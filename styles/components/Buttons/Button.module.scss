@@ -1,0 +1,30 @@
+.btn {
+  display: inline-block;
+  padding: 1rem 1.75rem;
+  background: linear-gradient(135deg, #FF0C0C, #331E1E);
+
+  color: #ffffff;
+  font-weight: medium;
+  font-size: 1rem;
+  line-height: 1.25rem;
+  text-transform: uppercase;
+  border-radius: 0.375rem;
+  transition: background-color 0.15s ease-in-out;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+
+  &:hover {
+    background: linear-gradient(135deg, #331E1E, #FF0C0C );
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5);
+  }
+
+  &:disabled {
+    background-color: #cbd5e0;
+    cursor: not-allowed;
+  }
+}

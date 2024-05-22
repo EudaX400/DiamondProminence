@@ -5,6 +5,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import styles from '../../styles/components/LogIn/form.module.scss';
 import { GoogleIcon } from "../../public/icons/google";
+import { Input } from "../Forms/Inputs";
+import { Button } from "../Buttons/Button";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -56,35 +58,30 @@ export const LoginForm = () => {
         <p className={`${styles.error}`}>{error}</p>
       )}
       <div className={`${styles.mb6}`}>
-        <input
-          required
+        <Input
           type="email"
           name="email"
           value={formValues.email}
           onChange={handleChange}
           placeholder="Email address"
-          className={`${styles.inputStyle}`}
         />
       </div>
       <div className={`${styles.mb6}`}>
-        <input
-          required
+        <Input
           type="password"
           name="password"
           value={formValues.password}
           onChange={handleChange}
           placeholder="Password"
-          className={`${styles.inputStyle}`}
         />
       </div>
-      <button
+      <Button
         type="submit"
         style={{ backgroundColor: `${loading ? "#ccc" : "#3446eb"}` }}
-        className={`${styles.submitButton}`}
         disabled={loading}
       >
         {loading ? "loading..." : "Sign In"}
-      </button>
+      </Button>
 
       <div className={`${styles.divider}`}>
         <p className={`${styles.dividerText}`}>OR</p>
