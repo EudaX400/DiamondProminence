@@ -1,9 +1,63 @@
+/* index.module.scss */
+
+.custom-background {
+  position: relative;
+  z-index: 0;
+}
+
+.custom-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../public/DiamondProminence_back-Photoroom.png-Photoroom.png'); /* Ruta absoluta de la imagen */
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 0.5; /* Reducir la opacidad de la imagen */
+  z-index: -1; /* Colocar la imagen detrás de todo el contenido */
+}
+
+/* Resto de tus estilos */
 .post {
   transition: box-shadow 0.1s ease-in;
   margin-top: 2rem;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Asegurarse de que el contenido esté sobre la imagen */
 }
 
-.post:hover {
-  box-shadow: 1px 1px 3px #aaa;
+.create,
+.join,
+.view {
+  margin: auto;
+  padding: 35px;
+  width: 50%;
+  text-align: center;
+  position: relative;
+  z-index: 1; /* Asegurarse de que el contenido esté sobre la imagen */
 }
 
+/* Media queries */
+@media (max-width: 900px) {
+  .create,
+  .join,
+  .view {
+    width: 70%;
+  }
+}
+
+@media (max-width: 600px) {
+  .create,
+  .join,
+  .view {
+    width: 90%;
+  }
+
+  .post {
+    margin-top: 1rem;
+  }
+}
