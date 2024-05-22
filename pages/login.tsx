@@ -2,6 +2,7 @@ import { LoginForm } from "../components/LogIn/form";
 import Header from "../components/Header";
 import styles from "../styles/pages/login.module.scss";
 import Image from "next/image";
+import { ButtonLog } from "../components/Buttons/ButtonLog";
 
 export default function LoginPage() {
   return (
@@ -18,12 +19,8 @@ export default function LoginPage() {
           <div className={styles.dividerContainer}>
             <div className={styles.divider} />
             <div className={styles.buttons}>
-              <button className={styles.rotatedButton} onClick={() => {/* Handle login click */ }}>
-                Login
-              </button>
-              <button className={styles.rotatedButton} onClick={() => {/* Handle register click */ }}>
-                Register
-              </button>
+              <ButtonLog href={'/login'} className={undefined}>Log In</ButtonLog>
+              <ButtonLog href={"/register"} className={styles.register}>Sign Up</ButtonLog>
             </div>
             <div className={styles.divider} />
           </div>

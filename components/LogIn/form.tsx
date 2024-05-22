@@ -80,7 +80,7 @@ export const LoginForm = () => {
         style={{ backgroundColor: `${loading ? "#ccc" : "#3446eb"}` }}
         disabled={loading}
       >
-        {loading ? "loading..." : "Sign In"}
+        {loading ? "loading..." : "Log In"}
       </Button>
 
       <div className={`${styles.divider}`}>
