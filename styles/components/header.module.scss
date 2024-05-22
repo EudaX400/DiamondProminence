@@ -1,17 +1,107 @@
-.nav {
-  display: flex;
-  padding: 2rem;
-  align-items: center;
+.header {
+  .topMenu {
+    display: flex;
+    justify-content: flex-end;
+    background-color: #ff1f1f;
+    height: 30px;
+    align-items: center;
 
-  .bold {
-    font-weight: bold;
-    text-decoration: none;
-    color: #000;
-    display: inline-block;
-    margin-left: 1rem;
+    p {
+      padding: 0 2rem;
+    }
   }
 
-  a[data-active="true"] {
-    color: gray;
+  .menu {
+    position: fixed;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #161616;
+    position: relative;
+
+    a {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+
+      &:hover {
+        color: #ff1f1f;
+      }
+    }
+
+    .tournament{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .tournamentLinkContainer {
+      position: relative;
+
+      a {
+        display: block;
+      }
+
+      .tournamentOptions {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fff;
+        border: 1px solid #ff1f1f;
+        padding: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+
+        a {
+          margin: 0.5rem 0;
+          color: #000;
+          text-decoration: none;
+
+          &:hover {
+            color: #ff1f1f;
+          }
+        }
+      }
+    }
+  }
+
+  .userContainer {
+    position: relative;
+
+    .userOptions {
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fff;
+      border: 1px solid #ff1f1f;
+      padding: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+
+      a {
+        margin: 0.5rem 0;
+        color: #000;
+        text-decoration: none;  
+        width: 60px;
+
+        &:hover {
+          color: #ff1f1f;
+        }
+      }
+    }
+  }
+
+  .divider{
+    height: 1px;
+    width: 100%;
+    background-color: #ff1f1f;
   }
 }
