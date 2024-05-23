@@ -2,11 +2,8 @@ import React from "react"
 import { GetStaticProps } from "next"
 import Layout from "../components/Layout"
 import Post, { PostProps } from "../components/Post"
-import styles from "../styles/pages/index.module.scss"
+import styles from "../styles/pages/join.module.scss"
 import prisma from '../lib/prisma';
-import { Create } from "../components/Main/Create"
-import { Join } from "../components/Main/Join"
-import { View } from "../components/Main/View"
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -43,18 +40,6 @@ const Main: React.FC<Props> = (props) => {
             </div>
           ))}
         </main>
-        
-        <div className={styles.create}>
-          <Create />
-        </div>
-        
-        <div className={styles.join}>
-          <Join />
-        </div>
-
-        <div className={styles.view}>
-          <View />
-        </div>
 
       </div>
     </Layout>

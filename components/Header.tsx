@@ -22,8 +22,6 @@ import { MenuMobileIcon } from "../public/icons/MenuMobileIcon";
 //let right = null;
 
 const Header = ({ isOpenMobile, setIsOpenMobile }) => {
-
-
   const [showOptions, setShowOptions] = useState(false);
   const [showUserOptions, setShowUserOptions] = useState(false);
 
@@ -35,12 +33,14 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
         </div>
 
         <div className={styles.menu}>
-          <Image
-            src="/DiamondProminenceLogo.png"
-            alt="DiamondProminenceLog"
-            width={80}
-            height={80}
-          />
+          <Link href="/">
+            <Image
+              src="/DiamondProminenceLogo.png"
+              alt="Diamond Prominence Logo"
+              width={80}
+              height={80}
+            />
+          </Link>
           <div className={styles.tournamentLinkContainer}>
             <div className={styles.tournament}>
               <a
@@ -84,7 +84,7 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
         <div className={styles.divider} />
       </section>
       <div className={styles.mobile}>
-        <div className={styles.logo} >
+        <div className={styles.logo}>
           <Image
             src="/DiamondProminenceLogo.png"
             alt="DiamondProminenceLog"
