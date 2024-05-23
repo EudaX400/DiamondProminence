@@ -7,21 +7,21 @@ import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 import { MobileHeader } from "./MobileHeader";
 import { MenuMobileIcon } from "../public/icons/MenuMobileIcon";
-  // const router = useRouter();
-  // const isActive: (pathname: string) => boolean = (pathname) =>
-  //   router.pathname === pathname;
+// const router = useRouter();
+// const isActive: (pathname: string) => boolean = (pathname) =>
+//   router.pathname === pathname;
 
-  // let left = (
-  //   <div className={styles.left}>
-  //     <Link className={styles.bold} data-active={isActive("/")} href="/">
-  //       Feed
-  //     </Link>
-  //   </div>
-  // );
+// let left = (
+//   <div className={styles.left}>
+//     <Link className={styles.bold} data-active={isActive("/")} href="/">
+//       Feed
+//     </Link>
+//   </div>
+// );
 
-  //let right = null;
+//let right = null;
 
-const Header = ({isOpenMobile, setIsOpenMobile}) => {
+const Header = ({ isOpenMobile, setIsOpenMobile }) => {
 
 
   const [showOptions, setShowOptions] = useState(false);
@@ -84,6 +84,15 @@ const Header = ({isOpenMobile, setIsOpenMobile}) => {
         <div className={styles.divider} />
       </section>
       <div className={styles.mobile}>
+        <div className={styles.logo} >
+          <Image
+            src="/DiamondProminenceLogo.png"
+            alt="DiamondProminenceLog"
+            width={60}
+            height={60}
+            style={{ opacity: isOpenMobile ? "0.3" : "" }}
+          />
+        </div>
         <button
           className={styles.mobileBtn}
           onClick={() => setIsOpenMobile(!isOpenMobile)}
