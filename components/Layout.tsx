@@ -7,13 +7,11 @@ const Layout = ({ children }) => {
   return (
     <div>
       <Header isOpenMobile={isOpenMobile} setIsOpenMobile={setIsOpenMobile} />
-      <div className={styles.layout}
-        style={{ opacity: isOpenMobile ? "0.3" : "" }}>
+      <div className={`${styles.layout} ${isOpenMobile ? styles.openMobile : ''}`}>
         {children}
       </div>
     </div>
   );
 };
-
 
 export default Layout;
