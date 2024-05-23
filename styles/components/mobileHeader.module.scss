@@ -1,0 +1,81 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ff1f1f;
+  background-color: #161616;
+  width: 60%;
+  position: absolute;
+
+  .topSection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem;
+    border-bottom: 1px solid #ff1f1f;
+
+    button {
+      background-color: transparent;
+      border: transparent;
+    }
+  }
+
+  .logSection {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #ff1f1f;
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .divider {
+      height: 15px;
+      background-color: white;
+      width: 1px;
+    }
+  }
+
+  .index {
+    display: flex;
+    flex-direction: column;
+
+    .tournamentLinkContainer {
+      .tournament {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #ff1f1f;
+
+        a {
+          border: 0;
+        }
+      }
+      .tournamentOptions {
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        a {
+          color: black;
+          padding: 0.5rem;
+          border-bottom: 1px solid #ff1f1f;
+        }
+      }
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem;
+      border-bottom: 1px solid #ff1f1f;
+    }
+  }
+
+  .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

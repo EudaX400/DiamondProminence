@@ -1,16 +1,19 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import Header from "./Header";
 import styles from '../styles/components/Layout.module.scss'
 
-interface Props {
-  children: React.ReactNode;
-}
+const Layout = ({ children }) => {
+  const [isOpenMobile, setIsOpenMobile] = useState(false);
+  return (
+    <div>
+      <Header isOpenMobile={isOpenMobile} setIsOpenMobile={setIsOpenMobile} />
+      <div className={styles.layout}
+        style={{ opacity: isOpenMobile ? "0.3" : "" }}>
+        {children}
+      </div>
+    </div>
+  );
+};
 
-const Layout: React.FC<Props> = (props) => (
-  <div>
-    <Header />
-    <div className={styles.layout}>{props.children}</div>
-  </div>
-);
 
 export default Layout;

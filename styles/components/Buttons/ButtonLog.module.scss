@@ -1,0 +1,23 @@
+.btn {
+    transform: rotate(270deg);
+    background-color: transparent;
+    color: #FF1F1F;
+    border: 1px solid #FF1F1F;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  
+    &:hover {
+      background-color: #FF1F1F;
+      color: white;
+    }
+  }
+  
+  .active {
+    background-color: #FF1F1F;
+    color: white;
+  }
+  
+  
