@@ -7,7 +7,6 @@ import { ButtonLog } from "../components/Buttons/ButtonLog";
 export default function RegisterPage() {
   return (
     <>
-      <Header />
       <section className={styles.section}>
         <div className={styles.component}>
           <Image

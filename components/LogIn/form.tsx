@@ -18,7 +18,7 @@ export const LoginForm = () => {
   const [error, setError] = useState("");
 
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/profile";
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -91,8 +91,9 @@ export const LoginForm = () => {
         className={`${styles.googleButton}`}
         onClick={() => signIn("google", { callbackUrl })}
         role="button"
-      >
-        <GoogleIcon/>
+      > <div className={styles.googleIcon}>
+          <GoogleIcon />
+        </div>
         Continue with Google
       </a>
     </form>

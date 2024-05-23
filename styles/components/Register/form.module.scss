@@ -1,13 +1,27 @@
-    .error-message {
-    text-align: center;
-    background-color: #f56565;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border-radius: 0.375rem;
-  }
+.error-message {
+  text-align: center;
+  background-color: #f56565;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.375rem;
+}
 
-  .input-container{
+.formContainer {
+  width: 30vw;
+  border: 1px solid #d1d5db;
+  padding: 1rem;
+
+  .input-container {
     margin-bottom: 1rem;
   }
-  
-  
+
+  .topInput {
+    display: flex;
+    flex-direction: row;
+    
+  }
+
+  @media (max-width: 768px) {
+    width: 60vw;
+  }
+}

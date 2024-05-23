@@ -23,6 +23,7 @@
       justify-content: center;
       align-items: center;
       width: 100%;
+      margin-left: -15%;
 
       .formWrapper {
         @media (min-width: 768px) {
@@ -31,8 +32,8 @@
         @media (min-width: 1024px) {
           width: 41.666667%;
         }
-        border: 1px solid #d1d5db;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        
+        box-shadow: 0 10px 16px rgba(0, 0, 0, 0.1);
         padding: 2rem;
       }
     }
@@ -75,6 +76,7 @@
       .container {
         .formWrapper {
           border: 0;
+          margin-left: 15%;
         }
       }
 
