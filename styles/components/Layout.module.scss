@@ -7,4 +7,24 @@
   z-index: 0;
   opacity: 0.3;
 }
+
+.customBackground {
+  position: relative;
+  z-index: 0;
+}
+
+.customBackground::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../public/DiamondProminence_back-Photoroom.png-Photoroom.png'); 
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 0.1; 
+  z-index: -1; 
+}
   

@@ -1,0 +1,19 @@
+.customBackground {
+    position: relative;
+    z-index: 0;
+  }
+  
+  .customBackground::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../public/DiamondProminence_back-Photoroom.png-Photoroom.png'); /* Ruta absoluta de la imagen */
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    opacity: 0.1; /* Reducir la opacidad de la imagen */
+    z-index: -1; /* Colocar la imagen detrás de todo el contenido */
+  }

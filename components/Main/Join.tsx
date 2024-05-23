@@ -9,7 +9,7 @@ export const Join = () => {
         <h2>Join</h2>
           <main>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit necessitatibus ipsa, voluptas est aut pariatur. Perferendis quod hic commodi temporibus praesentium, fugit rem. Ipsum, illo consectetur eius ad dignissimos deserunt.</p>
-            <LinkButton href={"undefined"}>Join Tournament</LinkButton>          
+            <LinkButton href={"/join"}>Join Tournament</LinkButton>          
           </main>
         </>
     )
