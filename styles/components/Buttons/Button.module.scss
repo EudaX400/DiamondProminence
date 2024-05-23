@@ -1,7 +1,7 @@
 .btn {
   display: inline-block;
   padding: 1rem 1.75rem;
-  background: linear-gradient(135deg, #FF0C0C, #331E1E);
+  background: linear-gradient(135deg, #FF0C0C, #7f0000);
 
   color: #ffffff;
   font-weight: medium;
@@ -15,7 +15,7 @@
   width: 100%;
 
   &:hover {
-    background: linear-gradient(135deg, #331E1E, #FF0C0C );
+    background: linear-gradient(135deg, #7f0000, #FF0C0C);
   }
 
   &:focus {

@@ -4,8 +4,8 @@ export const GoogleIcon = () => {
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       viewBox="0 0 32 32"
-      width="64"
-      height="64"
+      width="50"
+      height="50"
     >
       <defs>
         <path
@@ -17,18 +17,18 @@ export const GoogleIcon = () => {
         <use xlinkHref="#A" />
       </clipPath>
       <g transform="matrix(.727273 0 0 .727273 -.954545 -1.45455)">
-        <path d="M0 37V11l17 13z" clip-path="url(#B)" fill="#fbbc05" />
+        <path d="M0 37V11l17 13z" clipPath="url(#B)" fill="#fbbc05" />
         <path
           d="M0 11l17 13 7-6.1L48 14V0H0z"
-          clip-path="url(#B)"
+          clipPath="url(#B)"
           fill="#ea4335"
         />
         <path
           d="M0 37l30-23 7.9 1L48 0v48H0z"
-          clip-path="url(#B)"
+          clipPath="url(#B)"
           fill="#34a853"
         />
-        <path d="M48 48L17 24l-4-3 35-10z" clip-path="url(#B)" fill="#4285f4" />
+        <path d="M48 48L17 24l-4-3 35-10z" clipPath="url(#B)" fill="#4285f4" />
       </g>
     </svg>
   );

@@ -91,8 +91,9 @@ export const LoginForm = () => {
         className={`${styles.googleButton}`}
         onClick={() => signIn("google", { callbackUrl })}
         role="button"
-      >
-        <GoogleIcon/>
+      > <div className={styles.googleIcon}>
+          <GoogleIcon />
+        </div>
         Continue with Google
       </a>
     </form>

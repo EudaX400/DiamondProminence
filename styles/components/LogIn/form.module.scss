@@ -52,6 +52,7 @@
     width: 100%; 
     margin-bottom: 0.75rem; 
     background-color: #3b5998;
+    cursor: pointer;
   
     &:hover {
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05); 
@@ -69,5 +70,4 @@
   
   .googleIcon {
     padding-right: 0.5rem; 
-    height: 2rem;
-  }
+    }
