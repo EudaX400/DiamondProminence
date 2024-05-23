@@ -29,7 +29,7 @@
       }
     }
 
-    .tournament{
+    .tournament {
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -52,14 +52,17 @@
         align-items: center;
         background-color: #fff;
         border: 1px solid #ff1f1f;
-        padding: 1rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         z-index: 1;
 
         a {
+          display: flex;
+          justify-content: center;
+          padding: 0 2rem;
           margin: 0.5rem 0;
           color: #000;
           text-decoration: none;
+          width: 100%;
 
           &:hover {
             color: #ff1f1f;
@@ -82,15 +85,17 @@
       align-items: center;
       background-color: #fff;
       border: 1px solid #ff1f1f;
-      padding: 1rem;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       z-index: 1;
 
       a {
+        display: flex;
+        justify-content: center;
         margin: 0.5rem 0;
         color: #000;
-        text-decoration: none;  
-        width: 60px;
+        text-decoration: none;
+        width: 150%;
+        padding: 0 2rem;
 
         &:hover {
           color: #ff1f1f;
@@ -99,9 +104,31 @@
     }
   }
 
-  .divider{
+  .divider {
     height: 1px;
     width: 100%;
     background-color: #ff1f1f;
   }
+
+  @media (max-width: 456px) {
+    display: none;
+  }
+}
+
+.mobile {
+  display: none;
+  position: relative;
+  
+  .mobileBtn {
+    background-color: transparent;
+    border: transparent;
+    position: absolute;
+  }
+
+  @media (max-width: 456px) {
+    padding: 0.5rem;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+  } 
 }
