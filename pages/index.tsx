@@ -30,8 +30,8 @@ type Props = {
 const Main: React.FC<Props> = (props) => {
   return (
     <Layout>
-      <div className={`${styles.post} ${styles.customBackground}`}> {/* Aquí aplicamos la clase customBackground */}
-        <h1>Diamnod Prominence</h1>
+      <div className={`${styles.post} ${styles.customBackground}`}> {/* Aquí aplicamos la clase custom-background */}
+        <h1>Diamond Prominence</h1>
         <main>
           <div className="textTitle">
           <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita quia magnam dolore sed sint amet molestias, labore quasi quibusdam dolorem aut quis exercitationem, eum eius? Fugiat dolorum quia ex velit.</h3>

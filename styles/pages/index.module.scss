@@ -1,11 +1,9 @@
-/* index.module.scss */
-
-.custom-background {
+.customBackground {
   position: relative;
   z-index: 0;
 }
 
-.custom-background::before {
+.customBackground::before {
   content: "";
   position: absolute;
   top: 0;
@@ -15,8 +13,8 @@
   background-image: url('../../public/DiamondProminence_back-Photoroom.png-Photoroom.png'); /* Ruta absoluta de la imagen */
   background-repeat: no-repeat;
   background-position: center center;
-  background-size: cover;
-  opacity: 0.5; /* Reducir la opacidad de la imagen */
+  background-size: contain;
+  opacity: 0.1; /* Reducir la opacidad de la imagen */
   z-index: -1; /* Colocar la imagen detrás de todo el contenido */
 }
 
@@ -28,6 +26,14 @@
   text-align: center;
   position: relative;
   z-index: 1; /* Asegurarse de que el contenido esté sobre la imagen */
+
+  h1 {
+    font-size: 50px;
+  }
+}
+
+.post:hover {
+  box-shadow: 1px 1px 3px #aaa;
 }
 
 .create,
