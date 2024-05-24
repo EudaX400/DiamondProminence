@@ -5,18 +5,21 @@ import Link from "next/link";
 import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 import { useState } from "react";
+import { url } from "inspector";
 
 export const MobileHeader = ({ isOpenMobile, setIsOpenMobile, showOptions, setShowOptions }) => {
     return (
         <section className={styles.header}>
             <div className={styles.topSection}>
-                <Image
-                    src="/user.png"
-                    alt="user Logo"
-                    width={40}
-                    height={40}
-                    style={{ cursor: "pointer" }}
-                />
+                <Link href='/profile'>
+                    <Image
+                        src="/user.png"
+                        alt="user Logo"
+                        width={40}
+                        height={40}
+                        style={{ cursor: "pointer" }}
+                    />
+                </Link>
                 <button onClick={() => setIsOpenMobile(!isOpenMobile)}>
                     <CloseIcon />
                 </button>

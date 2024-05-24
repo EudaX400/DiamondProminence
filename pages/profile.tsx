@@ -1,61 +1,230 @@
 import { getServerSession } from "next-auth";
+import { signOut } from "next-auth/react";
 import { authOptions } from "../lib/auth";
+import prisma from "../lib/prisma";
 import Layout from "../components/Layout";
+import Image from "next/image";
+import ChangePassword from "../components/changePassword";
+import styles from "../styles/pages/profile.module.scss";
+import { useState } from "react";
+import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
+import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 
 export default function Profile({ user }) {
-    if (!user) {
-        return <p>Loading...</p>;
-    }
+  if (!user) {
+    return <p>Loading...</p>;
+  }
 
-    return (
-        <>
-            <Layout>
-                <section className="bg-ct-blue-600  min-h-screen pt-20">
-                    <div className="max-w-4xl mx-auto bg-ct-dark-100 rounded-md h-[20rem] flex justify-center items-center">
-                        <div>
-                            <p className="mb-3 text-5xl text-center font-semibold">
-                                Profile Page
-                            </p>
-                            <div className="flex items-center gap-8">
-                                <div>
-                                    {/* <img
-                  src={user.image ? user.image : "/user.png"}
-                  className="max-h-36"
-                  alt={`profile photo of ${user.name}`}
-                /> */}
-                                </div>
-                                <div className="mt-8">
-                                    <p className="mb-3">Name: {user.name}</p>
-                                    <p className="mb-3">Email: {user.email}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </Layout>
-        </>
+  const [openPassword, setOpenPassword] = useState(false);
+
+  const [openSections, setOpenSections] = useState({
+    profileDetails: false,
+    joinedTournament: false,
+    createdTournament: false,
+  });
+
+  const handleToggleSection = (section) => {
+    setOpenSections({
+      ...openSections,
+      [section]: !openSections[section],
+    });
+  };
+
+  const handleOpenAll = () => {
+    const allSectionsClosed = Object.values(openSections).every(
+      (section) => !section
     );
+    setOpenSections({
+      profileDetails: allSectionsClosed,
+      joinedTournament: allSectionsClosed,
+      createdTournament: allSectionsClosed,
+    });
+  };
+
+  const isOpenAll = Object.values(openSections).every((section) => section);
+
+  const handleLogOut = async () => {
+    await signOut({ callbackUrl: "/" });
+  };
+
+  return (
+    <>
+      <Layout>
+        <section className={styles.profileSection}>
+          <div className={styles.profileContainer}>
+            <div className={styles.profileContent}>
+              <div className={styles.profileTop}>
+                <Image
+                  src={user.image || "/user.png"}
+                  width={200}
+                  height={200}
+                  alt={`profile photo of ${user.name}`}
+                />
+                <p>{user.username}</p>
+              </div>
+              <div className={styles.openAll}>
+                <a
+                  onClick={handleOpenAll}
+                  style={{ color: isOpenAll ? "#ff1f1f" : "white" }}
+                >
+                  Open all
+                </a>
+              </div>
+              <div className={styles.profileDetails}>
+                <div
+                  className={styles.title}
+                  onClick={() => handleToggleSection("profileDetails")}
+                >
+                  <h2>Profile Details</h2>
+                  {openSections.profileDetails ? (
+                    <ArrowUpIcon />
+                  ) : (
+                    <ArrowDownIcon />
+                  )}
+                </div>
+                {openSections.profileDetails && (
+                  <>
+                    <div className={styles.name}>
+                      <p>Name: {user.name}</p>
+                      <p>Last Name: {user.lastName}</p>
+                      <p>Email: {user.email}</p>
+                      <p>Country: {user.country}</p>
+                      <p>Position: {user.position}</p>
+                      <p>Created at: {user.createdAt}</p>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className={styles.tournaments}>
+              <div className={styles.joinTournament}>
+                <div
+                  className={styles.title}
+                  onClick={() => handleToggleSection("joinedTournament")}
+                >
+                  <h2>Joined Tournament </h2>
+                  {openSections.joinedTournament ? (
+                    <ArrowUpIcon />
+                  ) : (
+                    <ArrowDownIcon />
+                  )}
+                </div>
+                {openSections.joinedTournament && (
+                  <div className={styles.details}>
+                    {user.userTournaments.length > 0 ? (
+                      <ul>
+                        {user.userTournaments.map((ut) => (
+                          <li key={ut.tournament.id}>{ut.tournament.title}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No joined tournaments</p>
+                    )}
+                  </div>
+                )}
+              </div>
+              <div className={styles.createdTournament}>
+                <div
+                  className={styles.title}
+                  onClick={() => handleToggleSection("createdTournament")}
+                >
+                  <h2>Created Tournament</h2>
+                  {openSections.createdTournament ? (
+                    <ArrowUpIcon />
+                  ) : (
+                    <ArrowDownIcon />
+                  )}
+                </div>
+                {openSections.createdTournament && (
+                  <div className={styles.details}>
+                    {user.createdTournaments.length > 0 ? (
+                      <ul>
+                        {user.createdTournaments.map((tournament) => (
+                          <li key={tournament.id}>{tournament.title}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No created tournaments</p>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+            <button className={styles.btn} onClick={handleLogOut}>
+              Log Out
+            </button>
+            <button
+              className={styles.btn}
+              onClick={() => setOpenPassword(!openPassword)}
+            >
+              Change Password
+            </button>
+          </div>
+        </section>
+        {openPassword && (
+          <div className={styles.changePassword}>
+            <ChangePassword email={user.email} openPassword={openPassword} />
+          </div>
+        )}
+      </Layout>
+    </>
+  );
 }
 
 export async function getServerSideProps(context) {
-    const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res, authOptions);
 
-    if (!session) {
-        return {
-            redirect: {
-                destination: '/login',
-                permanent: false,
-            },
-        };
-    }
-
-    const cleanedUser = Object.fromEntries(
-        Object.entries(session.user).map(([key, value]) => [key, value ?? null])
-    );
-
+  if (!session) {
     return {
-        props: {
-            user: cleanedUser,
-        },
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
     };
+  }
+
+  const userId = session.user.id;
+
+  const userTournaments = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      tournaments: {
+        include: {
+          tournament: true,
+        },
+      },
+    },
+  });
+
+  // Fetch prime user tournaments
+  const primeUserTournaments = await prisma.primeUser.findUnique({
+    where: { id: userId },
+    include: {
+      createdTournaments: true,
+      tournaments: {
+        include: {
+          tournament: true,
+        },
+      },
+    },
+  });
+
+  // Merge user data and tournaments
+  const user = {
+    ...session.user,
+    userTournaments: userTournaments?.tournaments || [],
+    primeUserTournaments: primeUserTournaments?.tournaments || [],
+    createdTournaments: primeUserTournaments?.createdTournaments || [],
+  };
+
+  // Ensure no undefined values in the user object
+  const cleanedUser = JSON.parse(
+    JSON.stringify(user, (key, value) => (value === undefined ? null : value))
+  );
+
+  return {
+    props: {
+      user: cleanedUser,
+    },
+  };
 }

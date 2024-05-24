@@ -1,4 +1,4 @@
-import prisma from "./prisma";  // Ajusta la ruta según la ubicación del archivo prisma.ts
+import prisma from "./prisma";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcryptjs";
 import type { NextAuthOptions } from "next-auth";

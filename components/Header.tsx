@@ -1,37 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import styles from "../styles/components/header.module.scss";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import styles from "../styles/components/header.module.scss";
 import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 import { MobileHeader } from "./MobileHeader";
 import { MenuMobileIcon } from "../public/icons/MenuMobileIcon";
-// const router = useRouter();
-// const isActive: (pathname: string) => boolean = (pathname) =>
-//   router.pathname === pathname;
-
-// let left = (
-//   <div className={styles.left}>
-//     <Link className={styles.bold} data-active={isActive("/")} href="/">
-//       Feed
-//     </Link>
-//   </div>
-// );
-
-//let right = null;
 
 const Header = ({ isOpenMobile, setIsOpenMobile }) => {
+  const { data: session, status } = useSession();
   const [showOptions, setShowOptions] = useState(false);
   const [showUserOptions, setShowUserOptions] = useState(false);
+  const [showTopMenu, setShowTopMenu] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowTopMenu(false);
+      } else {
+        setShowTopMenu(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
       <section className={styles.header}>
-        <div className={styles.topMenu}>
-          <p>Diamond Prominence</p>
-        </div>
-
+        {showTopMenu && (
+          <div className={styles.topMenu}>
+            <p>Diamond Prominence</p>
+          </div>
+        )}
         <div className={styles.menu}>
           <Link href="/">
             <Image
@@ -42,42 +48,56 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
             />
           </Link>
           <div className={styles.tournamentLinkContainer}>
-            <div className={styles.tournament}>
-              <a
-                onClick={() => setShowOptions(!showOptions)}
-                style={{ color: showOptions ? "#ff1f1f" : "white" }}
-              >
+            <div
+              className={styles.tournament}
+              onClick={() => setShowOptions(!showOptions)}
+            >
+              <a style={{ color: showOptions ? "#ff1f1f" : "white" }}>
                 Tournament
               </a>
               {showOptions ? <ArrowUpIcon /> : <ArrowDownIcon />}
             </div>
             {showOptions && (
               <div className={styles.tournamentOptions}>
-                <Link href={""}>Create</Link>
+                <Link href="">Create</Link>
                 <div className={styles.divider} />
-                <Link href={""}>Join</Link>
+                <Link href="">Join</Link>
                 <div className={styles.divider} />
-                <Link href={""}>View</Link>
+                <Link href="">View</Link>
               </div>
             )}
           </div>
-          <Link href={""}>Contact</Link>
-          <Link href={""}>About Us</Link>
+          <Link href="">Contact</Link>
+          <Link href="">About Us</Link>
           <div className={styles.userContainer}>
-            <Image
-              src="/user.png"
-              alt="user Logo"
-              width={40}
-              height={40}
-              onClick={() => setShowUserOptions(!showUserOptions)}
-              style={{ cursor: "pointer" }}
-            />
-            {showUserOptions && (
-              <div className={styles.userOptions}>
-                <Link href={"/login"}>Log In</Link>
-                <div className={styles.divider} />
-                <Link href={"/register"}>Sign Up</Link>
-              </div>
+            {status === "authenticated" ? (
+              <Link href="/profile">
+                <Image
+                  src={session.user.image || "/user.png"}
+                  alt="user Logo"
+                  width={40}
+                  height={40}
+                  style={{ cursor: "pointer" }}
+                />
+              </Link>
+            ) : (
+              <>
+                <Image
+                  src="/user.png"
+                  alt="user Logo"
+                  width={40}
+                  height={40}
+                  onClick={() => setShowUserOptions(!showUserOptions)}
+                  style={{ cursor: "pointer" }}
+                />
+                {showUserOptions && (
+                  <div className={styles.userOptions}>
+                    <Link href="/login">Log In</Link>
+                    <div className={styles.divider} />
+                    <Link href="/register">Sign Up</Link>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -87,7 +107,7 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
         <div className={styles.logo}>
           <Image
             src="/DiamondProminenceLogo.png"
-            alt="DiamondProminenceLog"
+            alt="DiamondProminenceLogo"
             width={60}
             height={60}
             style={{ opacity: isOpenMobile ? "0.3" : "" }}
