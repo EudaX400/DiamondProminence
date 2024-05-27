@@ -1,11 +1,27 @@
-import { NextApiRequest, NextApiResponse } from "next";
+// api/create-tournament.js
+import { getServerSession } from "next-auth";
 import prisma from "../../lib/prisma";
+import { authOptions } from "../../lib/auth";
 
-export default async function handle(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handle(req, res) {
   if (req.method === "POST") {
+    const session = await getServerSession(req, res, authOptions);
+
+    if (!session) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
+
+    const userId = session.user.id;
+
+    // Verificar si el usuario es prime
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user || !user.prime) {
+      return res.status(403).json({ error: "You must be a prime user to create a tournament" });
+    }
+
     const {
       title,
       category,
@@ -27,11 +43,8 @@ export default async function handle(
           finishedAt: new Date(endDate),
           description,
           private: isPrivate,
-          privatePassword,
-          participants: null, // Dejamos la lista de participantes como null temporalmente
-          User: { connect: [] }, // Dejamos la relación con User vacía temporalmente
-          PrimeUser: { connect: [] }, // Dejamos la relación con PrimeUser vacía temporalmente
-          ownerId: null, // Dejamos la relación con owner vacía temporalmente
+          privatePassword: isPrivate ? privatePassword : null,
+          ownerId: userId, // Asignamos el ownerId basado en la sesión del usuario
         },
       });
 

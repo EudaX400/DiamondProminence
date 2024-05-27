@@ -1,5 +1,6 @@
 import { GetStaticProps } from 'next';
 import prisma from '../lib/prisma';
+import { TournamentProps } from '../components/TournamentPost';
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -11,30 +12,29 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   });
 
+  // Convertir las fechas a strings
+  const serializedFeed: TournamentProps[] = feed.map((tournament) => ({
+    ...tournament,
+    createdAt: tournament.createdAt.toISOString(),
+    finishedAt: tournament.finishedAt.toISOString(),
+  }));
+
   return {
-    props: { feed },
+    props: { feed: serializedFeed },
     revalidate: 10,
   };
 };
 
-interface TournamentProps {
-  feed: {
-    id: string;
-    title: string;
-    description: string | null;
-    numPlayers: number;
-    owner: {
-      name: string | null;
-    } | null;
-  }[];
-}
+type Props = {
+  feed: TournamentProps[];
+};
 
-const Tournaments = ({ feed }: TournamentProps) => {
+const Tournament: React.FC<Props> = (props) => {
   return (
     <div>
       <h1>Public Tournaments</h1>
       <ul>
-        {feed.map((tournament) => (
+        {props.feed.map((tournament) => (
           <li key={tournament.id}>
             <h2>{tournament.title}</h2>
             <p>Owner: {tournament.owner?.name || 'Unknown'}</p>
@@ -47,4 +47,4 @@ const Tournaments = ({ feed }: TournamentProps) => {
   );
 };
 
-export default Tournaments;
+export default Tournament;

@@ -3,8 +3,8 @@ import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
 import styles from "../styles/pages/create.module.scss";
 import prisma from "../lib/prisma";
-
 import { TournamentProps } from "../components/TournamentPost";
+import { Input } from "../components/Forms/Inputs";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -84,53 +84,49 @@ const Main: React.FC<Props> = (props) => {
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles["form-group"]}>
               <label className={styles.label}>Título</label>
-              <input
+              <Input
                 type="text"
-                className={styles.input}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                required
+                name="title"
+                placeholder="Title"
               />
             </div>
             <div className={styles["form-group"]}>
               <label className={styles.label}>Categoría</label>
-              <input
+              <Input
                 type="text"
-                className={styles.input}
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                required
+                name="category"
+                placeholder="Category"
               />
             </div>
             <div className={styles["form-group"]}>
               <label className={styles.label}>Número de Participantes</label>
-              <input
+              <Input
                 type="number"
-                className={styles.input}
                 value={participants}
                 onChange={(e) => setParticipants(e.target.value)}
-                required
+                name="participants"
+                placeholder="Number of participants"
               />
             </div>
             <div className={styles["form-group"]}>
               <label className={styles.label}>Fecha de Inicio</label>
-              <input
+              <Input
                 type="date"
-                className={styles.input}
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                required
-              />
+                name="startDate" placeholder={undefined}              />
             </div>
             <div className={styles["form-group"]}>
               <label className={styles.label}>Fecha de Fin</label>
-              <input
+              <Input
                 type="date"
-                className={styles.input}
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                required
-              />
+                name="endDate" placeholder={undefined}              />
             </div>
             <div className={styles["form-group"]}>
               <label className={styles.label}>Descripción</label>
@@ -155,12 +151,12 @@ const Main: React.FC<Props> = (props) => {
             {isPrivate && (
               <div className={styles["form-group"]}>
                 <label className={styles.label}>Contraseña</label>
-                <input
+                <Input
                   type="password"
-                  className={styles.input}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
+                  name="password"
+                  placeholder="Password"
                 />
               </div>
             )}

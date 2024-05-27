@@ -29,7 +29,7 @@ export default function ChangePassword({ email, closePassword }) {
           password,
           newPassword,
         }),
-        credentials: "include", // Include cookies in the request
+        credentials: "include", 
       });
       
 

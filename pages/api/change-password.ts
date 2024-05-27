@@ -1,13 +1,14 @@
-import { getSession } from "next-auth/react";
+import { authOptions } from "../../lib/auth";
 import { compare, hash } from "bcryptjs";
 import prisma from "../../lib/prisma";
+import { getServerSession } from "next-auth";
 
 export default async function changePassword(req, res) {
   if (req.method !== "POST") {
     return res.status(405).end();
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return res.status(401).json({ message: "Not authenticated" });
   }
