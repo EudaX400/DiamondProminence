@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
-import Post, { PostProps } from "../components/Post";
 import styles from "../styles/pages/create.module.scss";
-import prisma from '../lib/prisma';
+import prisma from "../lib/prisma";
+
+import { TournamentProps } from "../components/TournamentPost";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -14,18 +15,25 @@ export const getStaticProps: GetStaticProps = async () => {
       },
     },
   });
+
+  // Convertir las fechas a strings
+  const serializedFeed: TournamentProps[] = feed.map((tournament) => ({
+    ...tournament,
+    createdAt: tournament.createdAt.toISOString(),
+    finishedAt: tournament.finishedAt.toISOString(),
+  }));
+
   return {
-    props: { feed },
+    props: { feed: serializedFeed },
     revalidate: 10,
   };
 };
 
 type Props = {
-  feed: PostProps[]
-}
+  feed: TournamentProps[];
+};
 
 const Main: React.FC<Props> = (props) => {
-  
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [participants, setParticipants] = useState("");
@@ -50,22 +58,22 @@ const Main: React.FC<Props> = (props) => {
     };
 
     try {
-      const response = await fetch('/api/create-tournament', {
-        method: 'POST',
+      const response = await fetch("/api/create-tournament", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(tournamentData),
       });
 
       if (response.ok) {
-        console.log('Tournament created successfully');
+        console.log("Tournament created successfully");
         // Resetea el formulario o redirige a otra página
       } else {
-        console.error('Error creating tournament');
+        console.error("Error creating tournament");
       }
     } catch (error) {
-      console.error('Error creating tournament:', error);
+      console.error("Error creating tournament:", error);
     }
   };
 
@@ -156,7 +164,7 @@ const Main: React.FC<Props> = (props) => {
                 />
               </div>
             )}
-            <button type="submit" className={styles.button}> 
+            <button type="submit" className={styles.button}>
               Crear Torneo
             </button>
           </form>

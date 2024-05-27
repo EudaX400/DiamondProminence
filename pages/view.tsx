@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import styles from "../styles/pages/view.module.scss";
 import prisma from "../lib/prisma";
+import { TournamentProps } from "../components/TournamentPost";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -14,14 +15,22 @@ export const getStaticProps: GetStaticProps = async () => {
       },
     },
   });
+
+  // Convertir las fechas a strings
+  const serializedFeed: TournamentProps[] = feed.map((tournament) => ({
+    ...tournament,
+    createdAt: tournament.createdAt.toISOString(),
+    finishedAt: tournament.finishedAt.toISOString(),
+  }));
+
   return {
-    props: { feed },
+    props: { feed: serializedFeed },
     revalidate: 10,
   };
 };
 
 type Props = {
-  feed: PostProps[];
+  feed: TournamentProps[];
 };
 
 const Main: React.FC<Props> = (props) => {
