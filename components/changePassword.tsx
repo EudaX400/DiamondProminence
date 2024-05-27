@@ -1,9 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import styles from "../styles/components/changePassword.module.scss";
 import { Input } from "./Forms/Inputs";
 import { Button } from "./Buttons/Button";
 
-export default function ChangePassword({ email, openPassword }) {
+export default function ChangePassword({ email, closePassword }) {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -17,6 +17,8 @@ export default function ChangePassword({ email, openPassword }) {
     }
 
     try {
+
+      console.log(email);
       const res = await fetch("/api/change-password", {
         method: "POST",
         headers: {
@@ -27,7 +29,9 @@ export default function ChangePassword({ email, openPassword }) {
           password,
           newPassword,
         }),
+        credentials: "include", // Include cookies in the request
       });
+      
 
       const data = await res.json();
       if (res.ok) {
@@ -42,7 +46,7 @@ export default function ChangePassword({ email, openPassword }) {
 
   return (
     <>
-      <div className={styles.main_background} onClick={openPassword}></div>
+      <div className={styles.main_background} onClick={closePassword}></div>
       <div className={styles.changePasswordContainer}>
         <h2>Change Password</h2>
         <form onSubmit={handlePasswordChange}>
@@ -60,7 +64,7 @@ export default function ChangePassword({ email, openPassword }) {
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              name="password"
+              name="newPassword"
               placeholder="New Password"
             />
           </div>
@@ -69,7 +73,7 @@ export default function ChangePassword({ email, openPassword }) {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              name="password"
+              name="confirmPassword"
               placeholder="Confirm Password"
             />
           </div>

@@ -10,8 +10,8 @@ import { useState } from "react";
 import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 
-export default function Profile({ user }) {
-  if (!user) {
+export default function Profile({ user }) { // Añadí session como prop
+  if (!user) { // Verifica que tanto user como session estén presentes
     return <p>Loading...</p>;
   }
 
@@ -150,20 +150,25 @@ export default function Profile({ user }) {
                 )}
               </div>
             </div>
-            <button className={styles.btn} onClick={handleLogOut}>
-              Log Out
-            </button>
-            <button
-              className={styles.btn}
-              onClick={() => setOpenPassword(!openPassword)}
-            >
-              Change Password
-            </button>
+            <div className={styles.buttons}>
+              <button className={styles.btn} onClick={handleLogOut}>
+                Log Out
+              </button>
+              <button
+                className={styles.btn}
+                onClick={() => setOpenPassword(!openPassword)}
+              >
+                Change Password
+              </button>
+            </div>
           </div>
         </section>
         {openPassword && (
           <div className={styles.changePassword}>
-            <ChangePassword email={user.email} openPassword={openPassword} />
+            <ChangePassword
+              email={user.email} // Pasando el correo electrónico al componente ChangePassword
+              closePassword={() => setOpenPassword(false)}
+            />
           </div>
         )}
       </Layout>
@@ -173,6 +178,7 @@ export default function Profile({ user }) {
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  console.log("Session:", session);
 
   if (!session) {
     return {
@@ -222,9 +228,16 @@ export async function getServerSideProps(context) {
     JSON.stringify(user, (key, value) => (value === undefined ? null : value))
   );
 
+  // Clean up session removing undefined values
+  const cleanedSession = JSON.parse(
+    JSON.stringify(session, (key, value) => (value === undefined ? null : value))
+  );
+
   return {
     props: {
       user: cleanedUser,
+      session: cleanedSession, // Pasando la sesión limpia como prop
     },
   };
 }
+
