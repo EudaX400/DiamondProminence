@@ -1,19 +1,194 @@
 .customBackground {
-    position: relative;
-    z-index: 0;
+  position: relative;
+  z-index: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.customBackground::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../public/DiamondProminence_back-Photoroom.png-Photoroom.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+  max-width: 800px;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.searchGroup {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.results {
+  width: 100%;
+  max-height: 400px; /* Limitar la altura para mostrar 4 torneos */
+  overflow-y: auto;  /* Habilitar el scroll vertical */
+  background-color: rgba(0, 0, 0, 0.536); /* Fondo transparente */
+  border: 1px solid #ced4da; /* Añadir un borde si se desea */
+  padding: 0.5rem;
+  border-radius: 2px;
+}
+
+.tournament {
+  padding: 1rem;
+  border-radius: 2px;
+  margin-bottom: 0.5rem;
+  color: rgb(255, 255, 255);
+}
+
+.tournamentOdd {
+  background: linear-gradient(135deg, #FF0C0C, #7f0000);
+  border: 1px solid linear-gradient(135deg, #FF0C0C, #7f0000);
+}
+
+.tournamentEven {
+  background: linear-gradient(135deg, #161616, #0a0a0a);
+  border: 1px solid linear-gradient(135deg, #161616, #0a0a0a);
+}
+
+.line {
+  width: 100%;
+  height: 1px;
+  background-color: #ced4da;
+  margin: 1rem 0;
+}
+
+.button {
+  display: block;
+  width: 22%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #FF0C0C, #7f0000);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.button:hover {
+  background: linear-gradient(135deg, #7f0000, #FF0C0C);
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 700px;
+    padding: 1.5rem;
   }
-  
-  .customBackground::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('../../public/DiamondProminence_back-Photoroom.png-Photoroom.png'); /* Ruta absoluta de la imagen */
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: contain;
-    opacity: 0.1; /* Reducir la opacidad de la imagen */
-    z-index: -1; /* Colocar la imagen detrás de todo el contenido */
+
+  .title {
+    font-size: 1.8rem;
   }
+
+  .button {
+    width: 30%;
+  }
+}
+
+@media (max-width: 992px) {
+  .container {
+    max-width: 600px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+
+  .button {
+    width: 40%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 500px;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .button {
+    width: 50%;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    max-width: 400px;
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .button {
+    width: 60%;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    max-width: 350px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    margin-bottom: 50px;
+  }
+
+  .button {
+    width: 40%;
+  }
+
+  .input {
+    padding: 0.4rem;
+  }
+
+  .tournament {
+    padding: 0.8rem;
+  }
+}
