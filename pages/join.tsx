@@ -1,9 +1,9 @@
-import React from "react"
-import { GetStaticProps } from "next"
-import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
-import styles from "../styles/pages/join.module.scss"
-import prisma from '../lib/prisma';
+import React, { useEffect, useState } from "react";
+import { GetStaticProps } from "next";
+import Layout from "../components/Layout";
+import Post, { PostProps } from "../components/Post";
+import styles from "../styles/pages/join.module.scss";
+import prisma from "../lib/prisma";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -21,29 +21,123 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 type Props = {
-  feed: PostProps[]
-}
+  feed: PostProps[];
+};
 
 const Main: React.FC<Props> = (props) => {
+  const [code, setCode] = useState("");
+  const [name, setName] = useState("");
+  const [results, setResults] = useState<any[]>(props.feed);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  const handleSearch = async () => {
+    // Aquí realizarías la búsqueda de torneos utilizando code y name
+    const searchResults = [
+      { id: 1, title: "Tournament 1", category: "Category 1" },
+      { id: 2, title: "Tournament 2", category: "Category 2" },
+      { id: 3, title: "Tournament 3", category: "Category 3" },
+      { id: 4, title: "Tournament 4", category: "Category 4" },
+      { id: 5, title: "Tournament 5", category: "Category 5" },
+      { id: 6, title: "Tournament 6", category: "Category 6" },
+    ];
+    setResults(searchResults);
+  };
+
+  const loadMoreResults = async () => {
+    setLoading(true);
+    // Simulación de carga adicional de resultados
+    const moreResults = [
+      {
+        id: results.length + 1,
+        title: `Tournament ${results.length + 1}`,
+        category: "Category 1",
+      },
+      {
+        id: results.length + 2,
+        title: `Tournament ${results.length + 2}`,
+        category: "Category 2",
+      },
+      {
+        id: results.length + 3,
+        title: `Tournament ${results.length + 3}`,
+        category: "Category 3",
+      },
+      {
+        id: results.length + 4,
+        title: `Tournament ${results.length + 4}`,
+        category: "Category 4",
+      },
+    ];
+    setResults([...results, ...moreResults]);
+    setPage(page + 1);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop !==
+        document.documentElement.offsetHeight
+      )
+        return;
+      loadMoreResults();
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [results]);
+
   return (
     <Layout>
-      <div className={`${styles.post}`}>
-        <h1>Diamond Prominence</h1>
-        <main>
-          <div className="textTitle">
-          <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita quia magnam dolore sed sint amet molestias, labore quasi quibusdam dolorem aut quis exercitationem, eum eius? Fugiat dolorum quia ex velit.</h3>
+      <div className={styles.customBackground}>
+        <div className={styles.container}>
+          <h1 className={styles.title}>Join Tournament</h1>
+          <div className={styles.searchGroup}>
+            <label className={styles.label} htmlFor="code">
+              Código del Torneo
+            </label>
+            <input
+              id="code"
+              type="text"
+              className={styles.input}
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
           </div>
-
-          {props.feed.map((post) => (
-            <div key={post.id} className={styles.post}>
-              <Post post={post} />
-            </div>
-          ))}
-        </main>
-
+          <div className={styles.searchGroup}>
+            <label className={styles.label} htmlFor="name">
+              Nombre del Torneo
+            </label>
+            <input
+              id="name"
+              type="text"
+              className={styles.input}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <button className={styles.button} onClick={handleSearch}>
+            Search
+          </button>
+          <div className={styles.line}></div>
+          <div className={styles.results}>
+            {results.map((tournament, index) => (
+              <div
+                key={tournament.id}
+                className={`${styles.tournament} ${
+                  index % 2 === 0 ? styles.tournamentEven : styles.tournamentOdd
+                }`}
+              >
+                <h2>{tournament.title}</h2>
+                <p>{tournament.category}</p>
+              </div>
+            ))}
+          </div>
+          {loading && <p>Loading...</p>}
+        </div>
       </div>
     </Layout>
-  )
-}
+  );
+};
 
-export default Main
+export default Main;

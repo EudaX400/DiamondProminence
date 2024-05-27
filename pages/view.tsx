@@ -127,7 +127,7 @@ const Main: React.FC<Props> = (props) => {
             />
           </div>
           <button className={styles.button} onClick={handleSearch}>
-            Buscar
+            Search
           </button>
           <div className={styles.line}></div>
           <div className={styles.results}>
