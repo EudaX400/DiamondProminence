@@ -16,7 +16,6 @@ export default function Profile({ user }) {
   }
 
   const [openPassword, setOpenPassword] = useState(false);
-
   const [openSections, setOpenSections] = useState({
     profileDetails: false,
     joinedTournament: false,
@@ -102,7 +101,7 @@ export default function Profile({ user }) {
                   className={styles.title}
                   onClick={() => handleToggleSection("joinedTournament")}
                 >
-                  <h2>Joined Tournament </h2>
+                  <h2>Joined Tournament</h2>
                   {openSections.joinedTournament ? (
                     <ArrowUpIcon />
                   ) : (
@@ -111,10 +110,10 @@ export default function Profile({ user }) {
                 </div>
                 {openSections.joinedTournament && (
                   <div className={styles.details}>
-                    {user.userTournaments.length > 0 ? (
+                    {user.joinedTournaments.length > 0 ? (
                       <ul>
-                        {user.userTournaments.map((ut) => (
-                          <li key={ut.tournament.id}>{ut.tournament.title}</li>
+                        {user.joinedTournaments.map((tournament) => (
+                          <li key={tournament.id}>{tournament.title}</li>
                         ))}
                       </ul>
                     ) : (
@@ -150,20 +149,25 @@ export default function Profile({ user }) {
                 )}
               </div>
             </div>
-            <button className={styles.btn} onClick={handleLogOut}>
-              Log Out
-            </button>
-            <button
-              className={styles.btn}
-              onClick={() => setOpenPassword(!openPassword)}
-            >
-              Change Password
-            </button>
+            <div className={styles.buttons}>
+              <button className={styles.btn} onClick={handleLogOut}>
+                Log Out
+              </button>
+              <button
+                className={styles.btn}
+                onClick={() => setOpenPassword(!openPassword)}
+              >
+                Change Password
+              </button>
+            </div>
           </div>
         </section>
         {openPassword && (
           <div className={styles.changePassword}>
-            <ChangePassword email={user.email} openPassword={openPassword} />
+            <ChangePassword
+              email={user.email}
+              closePassword={() => setOpenPassword(false)}
+            />
           </div>
         )}
       </Layout>
@@ -173,6 +177,7 @@ export default function Profile({ user }) {
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
+  console.log("Session:", session);
 
   if (!session) {
     return {
@@ -185,10 +190,11 @@ export async function getServerSideProps(context) {
 
   const userId = session.user.id;
 
-  const userTournaments = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: userId },
     include: {
-      tournaments: {
+      tournaments: true,
+      participants: {
         include: {
           tournament: true,
         },
@@ -196,35 +202,27 @@ export async function getServerSideProps(context) {
     },
   });
 
-  // Fetch prime user tournaments
-  const primeUserTournaments = await prisma.primeUser.findUnique({
-    where: { id: userId },
-    include: {
-      createdTournaments: true,
-      tournaments: {
-        include: {
-          tournament: true,
-        },
-      },
-    },
-  });
-
-  // Merge user data and tournaments
-  const user = {
+  // Organize the user data
+  const userData = {
     ...session.user,
-    userTournaments: userTournaments?.tournaments || [],
-    primeUserTournaments: primeUserTournaments?.tournaments || [],
-    createdTournaments: primeUserTournaments?.createdTournaments || [],
+    createdTournaments: user?.tournaments || [],
+    joinedTournaments: user?.participants.map(p => p.tournament) || [],
   };
 
-  // Ensure no undefined values in the user object
   const cleanedUser = JSON.parse(
-    JSON.stringify(user, (key, value) => (value === undefined ? null : value))
+    JSON.stringify(userData, (key, value) => (value === undefined ? null : value))
+  );
+
+  const cleanedSession = JSON.parse(
+    JSON.stringify(session, (key, value) => (value === undefined ? null : value))
   );
 
   return {
     props: {
       user: cleanedUser,
+      session: cleanedSession,
     },
   };
 }
+
+

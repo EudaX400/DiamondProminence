@@ -9,67 +9,43 @@ datasource db {
 }
 
 model Tournament {
-  id              String                @id @default(cuid()) @map("tournament_pkey")
+  id              String              @id @default(cuid()) @map("tournament_pkey")
   title           String
   numPlayers      Int
   description     String?
-  private         Boolean               @default(false)
+  private         Boolean             @default(false)
   privatePassword String?
-  ownerId         String?
+  ownerId         String?             @map("owner_id")
+  owner           User?               @relation(fields: [ownerId], references: [id], name: "UserTournaments")
   category        String?
-  participants    String?
-  createdAt       DateTime              @default(now()) @map("created_at")
+  participants    TournamentParticipant[]
+  createdAt       DateTime            @default(now()) @map("created_at")
   finishedAt      DateTime
-  PrimeUser       PrimeUserTournament[]
-  owner           PrimeUser?            @relation("OwnerTournaments", fields: [ownerId], references: [id])
-  User            UserTournament[]
 }
 
 model User {
-  id          String           @id @default(cuid()) @map("user_pkey")
-  name        String?
-  lastName    String?
-  email       String?          @unique @map("user_email_key")
-  country     String?
-  password    String?
-  position    String?
-  createdAt   DateTime         @default(now()) @map("created_at")
-  username    String?          @unique @map("user_username_key")
-  tournaments UserTournament[]
-
-  @@map("users")
+  id                  String                   @id @default(cuid()) @map("user_pkey")
+  name                String?
+  lastName            String?
+  email               String?                  @unique @map("user_email_key")
+  country             String?
+  password            String?
+  position            String?
+  createdAt           DateTime                 @default(now()) @map("created_at")
+  username            String?                  @unique @map("user_username_key")
+  prime               Boolean                  @default(false)
+  tournaments         Tournament[]             @relation("UserTournaments")
+  participants      TournamentParticipant[]
 }
 
-model PrimeUser {
-  id                 String                @id @default(cuid()) @map("prime_user_pkey")
-  name               String?
-  lastName           String?
-  email              String?               @unique @map("prime_user_email_key")
-  country            String?
-  password           String?
-  position           String?
-  createdAt          DateTime              @default(now()) @map("created_at")
-  username           String?               @unique @map("prime_user_username_key")
-  tournaments        PrimeUserTournament[]
-  createdTournaments Tournament[]          @relation("OwnerTournaments")
-
-  @@map("prime_users")
-}
-
-model UserTournament {
-  userId       String
+model TournamentParticipant {
   tournamentId String
+  userId       String
+  joinedAt     DateTime @default(now())
+
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
   user         User       @relation(fields: [userId], references: [id])
 
-  @@id([userId, tournamentId])
-}
-
-model PrimeUserTournament {
-  primeUserId  String
-  tournamentId String
-  primeUser    PrimeUser  @relation(fields: [primeUserId], references: [id])
-  tournament   Tournament @relation(fields: [tournamentId], references: [id])
-
-  @@id([primeUserId, tournamentId])
+  @@id([tournamentId, userId])
+  @@map("tournament_participant_pkey")
 }

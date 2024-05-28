@@ -1,36 +1,36 @@
-import { getSession } from "next-auth/react";
+import { authOptions } from "../../lib/auth";
 import { compare, hash } from "bcryptjs";
 import prisma from "../../lib/prisma";
+import { getServerSession } from "next-auth";
 
-export default async (req, res) => {
+export default async function changePassword(req, res) {
   if (req.method !== "POST") {
     return res.status(405).end();
   }
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   if (!session) {
     return res.status(401).json({ message: "Not authenticated" });
   }
 
   const { email, password, newPassword } = req.body;
 
+  // Verificar si se recibieron todos los campos necesarios
   if (!email || !password || !newPassword) {
     return res.status(400).json({ message: "Missing fields" });
   }
 
+  // Obtener el usuario de la base de datos
   const user = await prisma.user.findUnique({
     where: { email },
   });
 
-  if (!user) {
-    return res.status(404).json({ message: "User not found" });
-  }
-
-  const isValid = await compare(password, user.password);
-  if (!isValid) {
+  // Verificar si el usuario existe y la contraseña actual es válida
+  if (!user || !(await compare(password, user.password))) {
     return res.status(401).json({ message: "Current password is incorrect" });
   }
 
+  // Hashear la nueva contraseña y actualizarla en la base de datos
   const hashedPassword = await hash(newPassword, 10);
   await prisma.user.update({
     where: { email },
@@ -38,4 +38,4 @@ export default async (req, res) => {
   });
 
   res.status(200).json({ message: "Password changed successfully" });
-};
+}

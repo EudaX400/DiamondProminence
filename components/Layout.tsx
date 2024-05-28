@@ -7,7 +7,8 @@ const Layout = ({ children }) => {
   return (
     <div>
       <Header isOpenMobile={isOpenMobile} setIsOpenMobile={setIsOpenMobile} />
-      <div className={`${styles.layout} ${isOpenMobile ? styles.openMobile : ''} ${styles.customBackground}`}>
+      <div className={`${isOpenMobile ? styles.openMobile : ''}`}></div>
+      <div className={`${styles.layout} ${styles.customBackground}`}>
         {children}
       </div>
     </div>
