@@ -3,30 +3,31 @@ import Layout from "../components/Layout";
 import styles from "../styles/pages/contact.module.scss";
 import { Input } from "../components/Forms/Inputs";
 
-//VJ5AANNKHJDFLMMKZ441YWXY
-//Diamond_Prominence1824*
-//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
-
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [mail, setMail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [mailError, setMailError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    setFormData({ name, email, subject, message });
+    // Validación del correo electrónico
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(mail)) {
+      setMailError("Por favor ingresa un correo electrónico válido.");
+      setIsSubmitting(false);
+      return;
+    } else {
+      setMailError("");
+    }
+
+    const formData = { name, mail, subject, message };
 
     try {
       const response = await fetch("/api/send-email", {
@@ -41,9 +42,8 @@ const Contact: React.FC = () => {
 
       if (result.success) {
         setSuccessMessage("Correo enviado exitosamente.");
-        setFormData({ name: "", email: "", subject: "", message: "" });
         setName("");
-        setEmail("");
+        setMail("");
         setSubject("");
         setMessage("");
       } else {
@@ -72,13 +72,14 @@ const Contact: React.FC = () => {
             />
           </div>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="email">Correo Electrónico</label>
+            <label className={styles.label} htmlFor="mail">Email</label>
             <Input
-              type="email"
-              name="email"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              type="text"
+              name="mail"
+              value={mail}
+              onChange={(event) => setMail(event.target.value)}
             />
+            {mailError && <p className={styles.errorMessage}>{mailError}</p>}
           </div>
           <div className={styles.formGroup}>
             <label className={styles.label} htmlFor="subject">Asunto</label>
