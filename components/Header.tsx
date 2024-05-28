@@ -67,8 +67,8 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
               </div>
             )}
           </div>
-          <Link href="">Contact</Link>
-          <Link href="">About Us</Link>
+          <Link href="/contact">Contact</Link>
+          <Link href="/about">About Us</Link>
           <div className={styles.userContainer}>
             {status === "authenticated" ? (
               <Link href="/profile">
