@@ -5,6 +5,7 @@ import styles from "../styles/pages/create.module.scss";
 import prisma from "../lib/prisma";
 import { TournamentProps } from "../components/TournamentPost";
 import { Input } from "../components/Forms/Inputs";
+import router from "next/router";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -67,8 +68,8 @@ const Main: React.FC<Props> = (props) => {
       });
 
       if (response.ok) {
-        console.log("Tournament created successfully");
-        // Resetea el formulario o redirige a otra página
+        const result = await response.json();
+        router.push(`/tournament/${result.id}`);
       } else {
         console.error("Error creating tournament");
       }

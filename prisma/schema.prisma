@@ -19,6 +19,7 @@ model Tournament {
   owner           User?               @relation(fields: [ownerId], references: [id], name: "UserTournaments")
   category        String?
   participants    TournamentParticipant[]
+  matches         Match[]
   createdAt       DateTime            @default(now()) @map("created_at")
   finishedAt      DateTime
 }
@@ -35,7 +36,10 @@ model User {
   username            String?                  @unique @map("user_username_key")
   prime               Boolean                  @default(false)
   tournaments         Tournament[]             @relation("UserTournaments")
-  participants      TournamentParticipant[]
+  participants        TournamentParticipant[]
+  matchesPlayer1      Match[]                  @relation("MatchPlayer1")
+  matchesPlayer2      Match[]                  @relation("MatchPlayer2")
+  matchesWon          Match[]                  @relation("MatchWinner")
 }
 
 model TournamentParticipant {
@@ -48,4 +52,20 @@ model TournamentParticipant {
 
   @@id([tournamentId, userId])
   @@map("tournament_participant_pkey")
+}
+
+model Match {
+  id            String    @id @default(cuid())
+  tournamentId  String
+  player1Id     String
+  player2Id     String
+  player1Score  Int
+  player2Score  Int
+  winnerId      String?
+  createdAt     DateTime  @default(now())
+
+  tournament    Tournament  @relation(fields: [tournamentId], references: [id])
+  player1       User        @relation("MatchPlayer1", fields: [player1Id], references: [id])
+  player2       User        @relation("MatchPlayer2", fields: [player2Id], references: [id])
+  winner        User?       @relation("MatchWinner", fields: [winnerId], references: [id])
 }
