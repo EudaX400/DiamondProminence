@@ -44,7 +44,7 @@ export default async function handle(req, res) {
           description,
           private: isPrivate,
           privatePassword: isPrivate ? privatePassword : null,
-          ownerId: userId, // Asignamos el ownerId basado en la sesión del usuario
+          ownerId: userId, 
         },
       });
 

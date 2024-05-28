@@ -9,6 +9,7 @@ import styles from "../styles/pages/profile.module.scss";
 import { useState } from "react";
 import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
+import Link from "next/link";
 
 export default function Profile({ user }) {
   if (!user) {
@@ -139,7 +140,11 @@ export default function Profile({ user }) {
                     {user.createdTournaments.length > 0 ? (
                       <ul>
                         {user.createdTournaments.map((tournament) => (
-                          <li key={tournament.id}>{tournament.title}</li>
+                          <li key={tournament.id}>
+                            <Link href={`/tournament/${tournament.id}`}>
+                              {tournament.title}
+                            </Link>
+                          </li>
                         ))}
                       </ul>
                     ) : (
@@ -206,15 +211,19 @@ export async function getServerSideProps(context) {
   const userData = {
     ...session.user,
     createdTournaments: user?.tournaments || [],
-    joinedTournaments: user?.participants.map(p => p.tournament) || [],
+    joinedTournaments: user?.participants.map((p) => p.tournament) || [],
   };
 
   const cleanedUser = JSON.parse(
-    JSON.stringify(userData, (key, value) => (value === undefined ? null : value))
+    JSON.stringify(userData, (key, value) =>
+      value === undefined ? null : value
+    )
   );
 
   const cleanedSession = JSON.parse(
-    JSON.stringify(session, (key, value) => (value === undefined ? null : value))
+    JSON.stringify(session, (key, value) =>
+      value === undefined ? null : value
+    )
   );
 
   return {
@@ -224,5 +233,3 @@ export async function getServerSideProps(context) {
     },
   };
 }
-
-
