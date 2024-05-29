@@ -1,8 +1,8 @@
 import { LoginForm } from "../components/LogIn/form";
-import Header from "../components/Header";
 import styles from "../styles/pages/login.module.scss";
 import Image from "next/image";
 import { ButtonLog } from "../components/Buttons/ButtonLog";
+import Link from 'next/link';
 
 export default function LoginPage() {
   return (
