@@ -3,10 +3,11 @@
 import { signIn } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
-import styles from '../../styles/components/LogIn/form.module.scss';
+import styles from "../../styles/components/LogIn/form.module.scss";
 import { GoogleIcon } from "../../public/icons/google";
 import { Input } from "../Forms/Inputs";
 import { Button } from "../Buttons/Button";
+import Link from "next/link";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -54,9 +55,7 @@ export const LoginForm = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      {error && (
-        <p className={`${styles.error}`}>{error}</p>
-      )}
+      {error && <p className={`${styles.error}`}>{error}</p>}
       <div className={`${styles.mb6}`}>
         <Input
           type="email"
@@ -83,6 +82,10 @@ export const LoginForm = () => {
         {loading ? "loading..." : "Log In"}
       </Button>
 
+      <div className={styles.forgotPassword}>
+        <Link href="/request-reset">Forgot your password?</Link>
+      </div>
+
       <div className={`${styles.divider}`}>
         <p className={`${styles.dividerText}`}>OR</p>
       </div>
@@ -91,7 +94,9 @@ export const LoginForm = () => {
         className={`${styles.googleButton}`}
         onClick={() => signIn("google", { callbackUrl })}
         role="button"
-      > <div className={styles.googleIcon}>
+      >
+        {" "}
+        <div className={styles.googleIcon}>
           <GoogleIcon />
         </div>
         Continue with Google

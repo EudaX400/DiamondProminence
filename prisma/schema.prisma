@@ -35,6 +35,7 @@ model User {
   createdAt           DateTime                 @default(now()) @map("created_at")
   username            String?                  @unique @map("user_username_key")
   prime               Boolean                  @default(false)
+  ottCode             String?
   tournaments         Tournament[]             @relation("UserTournaments")
   participants        TournamentParticipant[]
   matchesPlayer1      Match[]                  @relation("MatchPlayer1")
