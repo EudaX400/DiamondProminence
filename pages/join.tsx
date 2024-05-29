@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
-import Post, { PostProps } from "../components/Post";
 import styles from "../styles/pages/join.module.scss";
 import prisma from "../lib/prisma";
 import { TournamentProps } from "../components/TournamentPost";
+import { Input } from "../components/Forms/Inputs";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -34,23 +36,62 @@ type Props = {
 };
 
 const Main: React.FC<Props> = (props) => {
+  const { data: session } = useSession();
+  const router = useRouter();
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
   const [results, setResults] = useState<any[]>(props.feed);
+  const [message, setMessage] = useState("");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async () => {
-    // Aquí realizarías la búsqueda de torneos utilizando code y name
-    const searchResults = [
-      { id: 1, title: "Tournament 1", category: "Category 1" },
-      { id: 2, title: "Tournament 2", category: "Category 2" },
-      { id: 3, title: "Tournament 3", category: "Category 3" },
-      { id: 4, title: "Tournament 4", category: "Category 4" },
-      { id: 5, title: "Tournament 5", category: "Category 5" },
-      { id: 6, title: "Tournament 6", category: "Category 6" },
-    ];
-    setResults(searchResults);
+    try {
+      const response = await fetch("/api/search-tournament", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ code, name }),
+      });
+
+      if (response.ok) {
+        const searchResults = await response.json();
+        setResults(searchResults);
+      } else {
+        console.error("Error searching tournaments");
+      }
+    } catch (error) {
+      console.error("Error searching tournaments:", error);
+    }
+  };
+
+  const handleJoin = async (tournamentId) => {
+    if (!session) {
+      alert("You need to be logged in to join a tournament.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/join-tournament", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ tournamentId, userId: session.user.id }),
+      });
+
+      if (response.ok) {
+        setMessage("Successfully joined the tournament!");
+        setTimeout(() => {
+          router.push(`/tournament/${tournamentId}`);
+        }, 2000);
+      } else {
+        console.error("Error joining the tournament");
+      }
+    } catch (error) {
+      console.error("Error joining the tournament:", error);
+    }
   };
 
   const loadMoreResults = async () => {
@@ -105,40 +146,49 @@ const Main: React.FC<Props> = (props) => {
             <label className={styles.label} htmlFor="code">
               Código del Torneo
             </label>
-            <input
-              id="code"
+            <Input
               type="text"
-              className={styles.input}
               value={code}
               onChange={(e) => setCode(e.target.value)}
+              name="code"
+              placeholder="Enter tournament code"
             />
           </div>
           <div className={styles.searchGroup}>
             <label className={styles.label} htmlFor="name">
               Nombre del Torneo
             </label>
-            <input
-              id="name"
+            <Input
               type="text"
-              className={styles.input}
               value={name}
               onChange={(e) => setName(e.target.value)}
+              name="name"
+              placeholder="Enter tournament name"
             />
           </div>
           <button className={styles.button} onClick={handleSearch}>
             Search
           </button>
           <div className={styles.line}></div>
+          {message && <p className={styles.message}>{message}</p>}
           <div className={styles.results}>
             {results.map((tournament, index) => (
               <div
                 key={tournament.id}
                 className={`${styles.tournament} ${
-                  index % 2 === 0 ? styles.tournamentEven : styles.tournamentOdd
+                  index % 2 === 0
+                    ? styles.tournamentEven
+                    : styles.tournamentOdd
                 }`}
               >
                 <h2>{tournament.title}</h2>
                 <p>{tournament.category}</p>
+                <button
+                  className={styles.button}
+                  onClick={() => handleJoin(tournament.id)}
+                >
+                  Join
+                </button>
               </div>
             ))}
           </div>

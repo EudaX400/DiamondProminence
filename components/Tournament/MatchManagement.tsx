@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Input } from "../Forms/Inputs";
+import { Button } from "../Buttons/Button";
+import styles from "../../styles/components/Tournament/MatchManagement.module.scss";
 
 const MatchManagement = ({ match, onUpdateScore }) => {
   const [player1Score, setPlayer1Score] = useState(match.player1Score);
@@ -11,33 +13,41 @@ const MatchManagement = ({ match, onUpdateScore }) => {
   };
 
   return (
-    <div>
+    <div className={styles.match}>
       <h3>
-        {match.player1.name} vs {match.player2.name}
+        {match.player1?.name ?? "Unknown"} vs {match.player2?.name ?? "Unknown"}
       </h3>
-      <form onSubmit={handleSubmit}>
-        <label>
-          {match.player1.name} Score:
-          <Input
-            type="number"
-            value={player1Score}
-            onChange={(e) => setPlayer1Score(parseInt(e.target.value))}
-            name={undefined}
-            placeholder={undefined}
-          />
-        </label>
-        <label>
-          {match.player2.name} Score:
-          <Input
-            type="number"
-            value={player2Score}
-            onChange={(e) => setPlayer2Score(parseInt(e.target.value))}
-            name={undefined}
-            placeholder={undefined}
-          />
-        </label>
-        <button type="submit">Update Score</button>
-      </form>
+      <div className={styles.matchForm}>
+        <form onSubmit={handleSubmit}>
+          <label>
+            {match.player1?.name ?? "Unknown"} Score:
+            <div className={styles.matchInput}>
+              <Input
+                type="number"
+                value={player1Score}
+                onChange={(e) => setPlayer1Score(parseInt(e.target.value))}
+                name={undefined}
+                placeholder={undefined}
+              />
+            </div>
+          </label>
+          <label>
+            {match.player2?.name ?? "Unknown"} Score:
+            <div className={styles.matchInput}>
+              <Input
+                type="number"
+                value={player2Score}
+                onChange={(e) => setPlayer2Score(parseInt(e.target.value))}
+                name={undefined}
+                placeholder={undefined}
+              />
+            </div>
+          </label>
+          <Button type="submit" style={undefined} disabled={undefined}>
+            Update Score
+          </Button>
+        </form>
+      </div>
     </div>
   );
 };

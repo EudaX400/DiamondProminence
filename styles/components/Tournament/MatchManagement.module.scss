@@ -1,11 +1,23 @@
-.form {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 20px;
+.match {
+  h3 {
+    text-align: center;
   }
-  
-  .form div {
-    margin-bottom: 10px;
+
+  .matchForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    form {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      width: 25%;
+
+      .matchInput {
+        padding: 1rem 0;
+      }
+    }
   }
-  
+}

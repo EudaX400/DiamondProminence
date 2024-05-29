@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
-  console.log("Session:", session);
 
   if (!session) {
     return new NextResponse(
