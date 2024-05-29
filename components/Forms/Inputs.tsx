@@ -1,6 +1,6 @@
 import styles from '../../styles/components/Forms/input.module.scss'
 
-export const Input = ({type, name, value, onChange, placeholder}) => {
+export const Input = ({type, name, value, onChange, placeholder=""}) => {
     return (
         <input
             required
