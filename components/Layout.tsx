@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from "react";
 import Header from "./Header";
 import styles from '../styles/components/Layout.module.scss'
+import { Footer } from "./Footer";
 
 const Layout = ({ children }) => {
   const [isOpenMobile, setIsOpenMobile] = useState(false);
@@ -11,6 +12,7 @@ const Layout = ({ children }) => {
       <div className={`${styles.layout} ${styles.customBackground}`}>
         {children}
       </div>
+      <Footer/>
     </div>
   );
 };

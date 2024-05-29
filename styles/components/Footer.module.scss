@@ -1,0 +1,22 @@
+.footer {
+  display: flex;
+  flex-direction: row;
+  background-color: #161616;
+  border-top: 1px solid #ff1f1f;
+  padding: 2rem;
+
+  .footerLinks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    a{
+        color: white;
+        text-decoration: none;
+
+        &:hover{
+            color: #ff1f1f;
+        }
+    }
+  }
+
+}

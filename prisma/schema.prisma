@@ -46,6 +46,7 @@ model TournamentParticipant {
   tournamentId String
   userId       String
   joinedAt     DateTime @default(now())
+  position     String?
 
   tournament   Tournament @relation(fields: [tournamentId], references: [id])
   user         User       @relation(fields: [userId], references: [id])
@@ -69,3 +70,4 @@ model Match {
   player2       User        @relation("MatchPlayer2", fields: [player2Id], references: [id])
   winner        User?       @relation("MatchWinner", fields: [winnerId], references: [id])
 }
+

@@ -1,15 +1,13 @@
 import styles from '../../styles/components/Tournament/Bracket.module.scss';
 
-const Bracket = ({ rounds }) => {
+const Bracket = ({ matches }) => {
   return (
     <div className={styles.bracket}>
-      {rounds.map((round, i) => (
-        <div key={i} className={styles.round}>
-          {round.map((match, j) => (
-            <div key={j} className={styles.match}>
-              <p>{match.user.name}</p>
-            </div>
-          ))}
+      {matches.map((match, i) => (
+        <div key={i} className={styles.match}>
+          <p>{match.player1?.name ?? "Unknown"} vs{" "}
+              {match.player2?.name ?? "Unknown"}</p>
+          <p>Score: {match.player1Score} - {match.player2Score}</p>
         </div>
       ))}
     </div>
