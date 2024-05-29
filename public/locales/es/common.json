@@ -1,0 +1,9 @@
+{
+    "welcome": "Bienvenido",
+    "login": "Iniciar sesión",
+    "signup": "Registrarse",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "requestReset": "Solicitar restablecimiento de contraseña",
+    "resetPassword": "Restablecer contraseña"
+  }
+  

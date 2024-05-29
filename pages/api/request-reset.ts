@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import prisma from '../../lib/prisma'; // Importación corregida
-import { sendResetEmail } from '../../lib/sendEmail'; // Implementa esta función para enviar correos
+import prisma from '../../lib/prisma'; 
+import { sendResetEmail } from '../../lib/sendEmail'; 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {

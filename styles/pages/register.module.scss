@@ -8,6 +8,14 @@
   border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 
+  .arrow {
+    cursor: pointer;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
   .component {
     display: grid;
     grid-template-columns: 1fr auto 1fr;

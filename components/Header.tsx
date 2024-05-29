@@ -59,16 +59,16 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
             </div>
             {showOptions && (
               <div className={styles.tournamentOptions}>
-                <Link href="">Create</Link>
+                <Link href="/create">Create</Link>
                 <div className={styles.divider} />
-                <Link href="">Join</Link>
+                <Link href="/join">Join</Link>
                 <div className={styles.divider} />
-                <Link href="">View</Link>
+                <Link href="/view">View</Link>
               </div>
             )}
           </div>
           <Link href="/contact">Contact</Link>
-          <Link href="/about">About Us</Link>
+          <Link href="/about-us">About Us</Link>
           <div className={styles.userContainer}>
             {status === "authenticated" ? (
               <Link href="/profile">

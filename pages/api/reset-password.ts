@@ -7,7 +7,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).end();
   }
 
-  const { code, password } = req.body;
+  const { code, password, confirmPassword } = req.body;
+
+  // Validación de contraseña
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      message: "Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, and one number.",
+    });
+  }
+
+  // Confirmación de la contraseña
+  if (password !== confirmPassword) {
+    return res.status(400).json({
+      message: "Passwords do not match.",
+    });
+  }
 
   try {
     const user = await prisma.user.findFirst({
