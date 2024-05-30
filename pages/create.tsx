@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
 import styles from "../styles/pages/create.module.scss";
 import prisma from "../lib/prisma";
 import { TournamentProps } from "../components/TournamentPost";
 import { Input } from "../components/Forms/Inputs";
-import router from "next/router";
+import router, { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
@@ -42,6 +43,29 @@ const Main: React.FC<Props> = (props) => {
   const [description, setDescription] = useState("");
   const [isPrivate, setIsPrivate] = useState(false);
   const [password, setPassword] = useState("");
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const [isPrime, setIsPrime] = useState(false);
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      const checkPrimeStatus = async () => {
+        try {
+          const response = await fetch("/api/check-prime");
+          const data = await response.json();
+          if (!data.isPrime) {
+            router.push("/prime");
+          } else {
+            setIsPrime(true);
+          }
+        } catch (error) {
+          console.error("Error checking prime status:", error);
+        }
+      };
+
+      checkPrimeStatus();
+    }
+  }, [status, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,6 +100,10 @@ const Main: React.FC<Props> = (props) => {
       console.error("Error creating tournament:", error);
     }
   };
+
+  if (status === "loading" || !isPrime) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Layout>
@@ -118,7 +146,8 @@ const Main: React.FC<Props> = (props) => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                name="startDate" placeholder={undefined}              />
+                name="startDate"
+              />
             </div>
             <div className={styles["form-group"]}>
               <label className={styles.label}>Fecha de Fin</label>
@@ -126,7 +155,8 @@ const Main: React.FC<Props> = (props) => {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                name="endDate" placeholder={undefined}              />
+                name="endDate"
+              />
             </div>
             <div className={styles["form-group"]}>
               <label className={styles.label}>Descripción</label>
