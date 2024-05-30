@@ -1,0 +1,23 @@
+.languageLinkContainer {
+    .language {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ff1f1f;
+  
+      a {
+        border: 0;
+      }
+    }
+    .languageOptions {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      a {
+        color: black;
+        padding: 0.5rem;
+        border-bottom: 1px solid #ff1f1f;
+      }
+    }
+  }
+  

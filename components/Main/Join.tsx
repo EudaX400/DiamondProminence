@@ -1,16 +1,28 @@
 import React from "react";
-import Link from "next/link";
-import styles from "../styles/components/main/join.module.scss";
+import { useTranslation } from "next-i18next";
 import { LinkButton } from "../Buttons/LinkButton";
 
 export const Join = () => {
-    return(
-        <>
-        <h2>Join</h2>
-          <main>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit necessitatibus ipsa, voluptas est aut pariatur. Perferendis quod hic commodi temporibus praesentium, fugit rem. Ipsum, illo consectetur eius ad dignissimos deserunt.</p>
-            <LinkButton href={"/join"}>Join Tournament</LinkButton>          
-          </main>
-        </>
-    )
-}
+  const { t } = useTranslation("common");
+
+  return (
+    <>
+      <h2>{t("join")}</h2>
+      <main>
+        <h3>{t("join1")}</h3>
+        <ul>
+          <li>
+            <p>{t("join2")}</p>
+            <p>{t("join3")}</p>
+            <p>{t("join4")}</p>
+            <p>{t("join5")}</p>
+          </li>
+        </ul>
+        <div>
+        <p>{t("join6")}</p>
+        </div>
+        <LinkButton href={"/join"}>{t("join_tournament")}</LinkButton>
+      </main>
+    </>
+  );
+};

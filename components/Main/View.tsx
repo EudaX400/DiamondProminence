@@ -1,16 +1,28 @@
 import React from "react";
-import Link from "next/link";
-import styles from "../styles/components/main/view.module.scss";
+import { useTranslation } from "next-i18next";
 import { LinkButton } from "../Buttons/LinkButton";
 
 export const View = () => {
-    return(
-        <>
-        <h2>View</h2>
-          <main>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At itaque nam ducimus consequatur in, officia dicta non quo praesentium? Quasi repudiandae maiores quos nostrum magni aliquam. Quia, quasi sunt! Quia?</p>
-            <LinkButton href={"/view"}>View Tournament</LinkButton>          
-          </main>
-        </>
-    )
-}
+  const { t } = useTranslation("common");
+
+  return (
+    <>
+      <h2>{t("view")}</h2>
+      <main>
+        <h3>{t("view1")}</h3>
+        <ul>
+          <li>
+            <p>{t("view2")}</p>
+            <p>{t("view3")}</p>
+            <p>{t("view4")}</p>
+          </li>
+        </ul>
+
+        <div>
+          <p>{t("view5")}</p>
+        </div>
+        <LinkButton href={"/view"}>{t("view_tournament")}</LinkButton>
+      </main>
+    </>
+  );
+};

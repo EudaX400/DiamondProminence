@@ -1,9 +1,38 @@
 {
-    "welcome": "Bienvenido",
-    "login": "Iniciar sesión",
-    "signup": "Registrarse",
-    "forgotPassword": "¿Olvidaste tu contraseña?",
-    "requestReset": "Solicitar restablecimiento de contraseña",
-    "resetPassword": "Restablecer contraseña"
-  }
-  
+  "welcome": "Bienvenido",
+  "login": "Iniciar Sesión",
+  "signup": "Regístrate",
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+  "requestReset": "Solicitar restablecimiento de contraseña",
+  "resetPassword": "Restablecer contraseña",
+  "diamond_prominence": "Diamond Prominence",
+  "welcome_message": "¡Bienvenido a Diamond Prominence!",
+  "view": "Ver",
+  "view_tournament": "Ver Torneo",
+  "join": "Unirse",
+  "join_tournament": "Unirse al Torneo",
+  "create": "Crear",
+  "create_tournament": "Crear Torneo",
+
+  "create1": "Aquí podrás crear cualquier torneo desde cero con facilidad:",
+  "create2": "Ponle un nombre: Personaliza el nombre de tu torneo para reflejar su espíritu.",
+  "create3": "Añade una categoría: Clasifica tu torneo según el deporte, el juego o la actividad.",
+  "create4": "Define el número de participantes: Decide cuántos jugadores o equipos pueden participar.",
+  "create5": "Establece una fecha de inicio: Elige el día de inicio del torneo.",
+  "create6": "Añade una descripción: Escribe una descripción detallada para proporcionar toda la información necesaria.",
+  "create7": "Define la privacidad: Elige si el torneo será privado o público.",
+  "create8": "*Estas funcionalidades exclusivas están disponibles solo para los usuarios Premium.",
+
+  "join1": "Aquí podrás unirte a cualquier torneo con facilidad:",
+  "join2": "Busca un torneo: Utiliza nuestro potente motor de búsqueda para encontrar el torneo que más te interese.",
+  "join3": "Revisa los detalles: Consulta la información detallada del torneo, incluyendo la categoría, número de participantes y la fecha de inicio.",
+  "join4": "Inscripción inmediata pública: Únete directamente a los torneos públicos sin necesidad de aprobación.",
+  "join5": "Inscripción privada: Únete directamente a los torneos privados utilizando la contraseña que te proporcionará el creador.",
+  "join6": "*Estas funcionalidades están disponibles para todos los usuarios.",
+
+  "view1": "Aquí podrás ver todos los torneos disponibles con facilidad:",
+  "view2": "Filtra por preferencias: Utiliza nuestros filtros avanzados para encontrar los torneos que se ajusten mejor a tus intereses.",
+  "view3": "Consulta los detalles: Obtén información completa sobre cada torneo, la descripción y los participantes.",
+  "view4": "Explora la lista de torneos: Navega por nuestra amplia selección de torneos.",
+  "view5": "*Estas funcionalidades están disponibles para todos los usuarios."
+}

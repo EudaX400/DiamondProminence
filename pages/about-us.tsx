@@ -7,8 +7,8 @@ import Layout from "../components/Layout";
 const AboutUs = () => {
   return (
     <Layout>
-    <section className={styles.section}>
-      <div className={styles.header}>
+      <section className={`${styles.section} ${styles.customBackground}`}>
+        <div className={`${styles.header}`}>
           <h1>About Us</h1>
         </div>
         <div className={styles.container}>
@@ -21,15 +21,15 @@ const AboutUs = () => {
           <p>
             We believe in the power of innovation and strive to bring you the
             latest solutions to meet your needs. Our mission is to deliver
-            exceptional value to our customers through unparalleled quality and
-            service.
+            exceptional value to our customers through unparalleled quality
+            and service.
           </p>
           <p>
             Thank you for choosing us. We look forward to serving you and
             helping you achieve your goals.
           </p>
         </div>
-    </section>
+      </section>
     </Layout>
   );
 };

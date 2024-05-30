@@ -7,6 +7,7 @@ import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 import { MobileHeader } from "./MobileHeader";
 import { MenuMobileIcon } from "../public/icons/MenuMobileIcon";
+import { LanguageSelector } from "./LanguageSelector";
 
 const Header = ({ isOpenMobile, setIsOpenMobile }) => {
   const { data: session, status } = useSession();
@@ -35,6 +36,9 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
       <section className={styles.header}>
         {showTopMenu && (
           <div className={styles.topMenu}>
+            <div className={styles.language}>
+              <LanguageSelector />
+            </div>
             <p>Diamond Prominence</p>
           </div>
         )}
