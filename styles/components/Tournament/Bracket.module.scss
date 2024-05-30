@@ -1,20 +1,22 @@
 .bracket {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 20px;
-  }
   
-  .round {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .match {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    text-align: center;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.phase {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.match {
+  background-color: #161616;
+  border: 1px solid #ff1f1f;
+  border-radius: 20px;
+  margin: 10px 0;
+  width: 300px;
+  cursor: pointer;
+}

@@ -114,7 +114,12 @@ export default function Profile({ user }) {
                     {user.joinedTournaments.length > 0 ? (
                       <ul>
                         {user.joinedTournaments.map((tournament) => (
-                          <li key={tournament.id}>{tournament.title}</li>
+                          <div className={styles.definedDetails} key={tournament.id}>
+                            <Link href={`/tournament/${tournament.id}`}>
+                              {tournament.title}
+                            </Link>
+                            <p>Category: {tournament.category}</p>
+                          </div>
                         ))}
                       </ul>
                     ) : (
@@ -140,11 +145,12 @@ export default function Profile({ user }) {
                     {user.createdTournaments.length > 0 ? (
                       <ul>
                         {user.createdTournaments.map((tournament) => (
-                          <li key={tournament.id}>
+                          <div className={styles.definedDetails} key={tournament.id}>
                             <Link href={`/tournament/${tournament.id}`}>
                               {tournament.title}
                             </Link>
-                          </li>
+                            <p>Category: {tournament.category}</p>
+                          </div>
                         ))}
                       </ul>
                     ) : (

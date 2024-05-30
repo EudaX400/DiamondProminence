@@ -7,10 +7,11 @@ import { TournamentProps } from "../components/TournamentPost";
 import { Input } from "../components/Forms/Inputs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { ButtonClick } from "../components/Buttons/ButtonClick";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.tournament.findMany({
-    where: { private: false },
+    where: {},
     include: {
       owner: {
         select: { name: true },
@@ -18,7 +19,6 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   });
 
-  // Convertir las fechas a strings
   const serializedFeed: TournamentProps[] = feed.map((tournament) => ({
     ...tournament,
     createdAt: tournament.createdAt.toISOString(),
@@ -42,6 +42,8 @@ const Main: React.FC<Props> = (props) => {
   const [name, setName] = useState("");
   const [results, setResults] = useState<any[]>(props.feed);
   const [message, setMessage] = useState("");
+  const [password, setPassword] = useState("");
+  const [selectedTournament, setSelectedTournament] = useState(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
@@ -66,19 +68,31 @@ const Main: React.FC<Props> = (props) => {
     }
   };
 
-  const handleJoin = async (tournamentId) => {
+  const handleJoin = async (tournament) => {
     if (!session) {
       alert("You need to be logged in to join a tournament.");
       return;
     }
 
+    if (tournament.private) {
+      setSelectedTournament(tournament);
+    } else {
+      joinTournament(tournament.id, null);
+    }
+  };
+
+  const joinTournament = async (tournamentId, password) => {
     try {
       const response = await fetch("/api/join-tournament", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ tournamentId, userId: session.user.id }),
+        body: JSON.stringify({
+          tournamentId,
+          userId: session.user.id,
+          password,
+        }),
       });
 
       if (response.ok) {
@@ -87,7 +101,8 @@ const Main: React.FC<Props> = (props) => {
           router.push(`/tournament/${tournamentId}`);
         }, 2000);
       } else {
-        console.error("Error joining the tournament");
+        const error = await response.json();
+        setMessage(error.error);
       }
     } catch (error) {
       console.error("Error joining the tournament:", error);
@@ -96,30 +111,7 @@ const Main: React.FC<Props> = (props) => {
 
   const loadMoreResults = async () => {
     setLoading(true);
-    // Simulación de carga adicional de resultados
-    const moreResults = [
-      {
-        id: results.length + 1,
-        title: `Tournament ${results.length + 1}`,
-        category: "Category 1",
-      },
-      {
-        id: results.length + 2,
-        title: `Tournament ${results.length + 2}`,
-        category: "Category 2",
-      },
-      {
-        id: results.length + 3,
-        title: `Tournament ${results.length + 3}`,
-        category: "Category 3",
-      },
-      {
-        id: results.length + 4,
-        title: `Tournament ${results.length + 4}`,
-        category: "Category 4",
-      },
-    ];
-    setResults([...results, ...moreResults]);
+    setResults([...results]);
     setPage(page + 1);
     setLoading(false);
   };
@@ -166,9 +158,7 @@ const Main: React.FC<Props> = (props) => {
               placeholder="Enter tournament name"
             />
           </div>
-          <button className={styles.button} onClick={handleSearch}>
-            Search
-          </button>
+          <ButtonClick onClick={handleSearch}>Search</ButtonClick>
           <div className={styles.line}></div>
           {message && <p className={styles.message}>{message}</p>}
           <div className={styles.results}>
@@ -176,24 +166,46 @@ const Main: React.FC<Props> = (props) => {
               <div
                 key={tournament.id}
                 className={`${styles.tournament} ${
-                  index % 2 === 0
-                    ? styles.tournamentEven
-                    : styles.tournamentOdd
+                  index % 2 === 0 ? styles.tournamentEven : styles.tournamentOdd
                 }`}
+                onClick={() => handleJoin(tournament)}
               >
                 <h2>{tournament.title}</h2>
                 <p>{tournament.category}</p>
-                <button
-                  className={styles.button}
-                  onClick={() => handleJoin(tournament.id)}
-                >
-                  Join
-                </button>
+                {tournament.private && (
+                  <p className={styles.private}>Private Tournament</p>
+                )}
               </div>
             ))}
           </div>
           {loading && <p>Loading...</p>}
         </div>
+        {selectedTournament && (
+          <div className={styles.modal}>
+            <div className={styles.modalContent}>
+              <h2>Enter Password for {selectedTournament.title}</h2>
+              <Input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                name={"Password"}
+              />
+              <div className={styles.btn}>
+                <ButtonClick
+                  onClick={() =>
+                    joinTournament(selectedTournament.id, password)
+                  }
+                >
+                  Join
+                </ButtonClick>
+                <ButtonClick onClick={() => setSelectedTournament(null)}>
+                  Cancel
+                </ButtonClick>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );

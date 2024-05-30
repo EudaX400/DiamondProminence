@@ -56,6 +56,10 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       margin-left: 25%;
+
+      .definedDetails {
+        border-top: 1px solid #ff1f1f;
+      }
     }
   }
 
@@ -67,6 +71,11 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       margin-left: 25%;
+
+
+        .definedDetails {
+          border-top: 1px solid #ff1f1f;
+        }
     }
   }
 
@@ -117,6 +126,16 @@
       @media (max-width: 700px) {
         width: 40%;
       }
+    }
+  }
+
+  a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+
+    &:hover {
+      color: #ff1f1f;
     }
   }
 }

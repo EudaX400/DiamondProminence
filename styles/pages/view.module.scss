@@ -61,10 +61,10 @@
 
 .results {
   width: 100%;
-  max-height: 400px; /* Limitar la altura para mostrar 4 torneos */
-  overflow-y: auto;  /* Habilitar el scroll vertical */
-  background-color: rgba(0, 0, 0, 0.536); /* Fondo transparente */
-  border: 1px solid #ced4da; /* Añadir un borde si se desea */
+  max-height: 400px; 
+  overflow-y: auto;  
+  background-color: rgba(0, 0, 0, 0.536); 
+  border: 1px solid #ced4da; 
   padding: 0.5rem;
   border-radius: 2px;
 }
@@ -74,6 +74,7 @@
   border-radius: 2px;
   margin-bottom: 0.5rem;
   color: rgb(255, 255, 255);
+  cursor: pointer;
 }
 
 .tournamentOdd {

@@ -1,4 +1,3 @@
-// api/create-tournament.js
 import { getServerSession } from "next-auth";
 import prisma from "../../lib/prisma";
 import { authOptions } from "../../lib/auth";
@@ -51,11 +50,10 @@ export default async function handle(req, res) {
       res.status(200).json(result);
     } catch (error) {
       console.error("Error creating tournament:", error);
-      res
-        .status(500)
-        .json({ error: "Error creating tournament", details: error });
+      res.status(500).json({ error: "Error creating tournament", details: error });
     }
   } else {
     res.status(405).json({ error: "Method not allowed" });
   }
 }
+  
