@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+import { useTranslation } from 'next-i18next';
 import styles from "../styles/components/changePassword.module.scss";
 import { Input } from "./Forms/Inputs";
 import { Button } from "./Buttons/Button";
 
 export default function ChangePassword({ email, closePassword }) {
+  const { t } = useTranslation('common');
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -12,13 +14,11 @@ export default function ChangePassword({ email, closePassword }) {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      setPasswordChangeMessage("New passwords do not match");
+      setPasswordChangeMessage(t('changePassword_error'));
       return;
     }
 
     try {
-
-      console.log(email);
       const res = await fetch("/api/change-password", {
         method: "POST",
         headers: {
@@ -31,16 +31,16 @@ export default function ChangePassword({ email, closePassword }) {
         }),
         credentials: "include", 
       });
-      
 
       const data = await res.json();
       if (res.ok) {
-        setPasswordChangeMessage("Password changed successfully");
+        setPasswordChangeMessage(t('changePassword_success'));
+        closePassword();
       } else {
-        setPasswordChangeMessage(data.message || "Error changing password");
+        setPasswordChangeMessage(data.message || t('changePassword_error'));
       }
     } catch (error) {
-      setPasswordChangeMessage("Error changing password");
+      setPasswordChangeMessage(t('changePassword_error'));
     }
   };
 
@@ -48,7 +48,7 @@ export default function ChangePassword({ email, closePassword }) {
     <>
       <div className={styles.main_background} onClick={closePassword}></div>
       <div className={styles.changePasswordContainer}>
-        <h2>Change Password</h2>
+        <h2>{t('changePassword_title')}</h2>
         <form onSubmit={handlePasswordChange}>
           <div>
             <Input
@@ -56,7 +56,7 @@ export default function ChangePassword({ email, closePassword }) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               name="password"
-              placeholder="Current Password"
+              placeholder={t('changePassword_currentPassword')}
             />
           </div>
           <div>
@@ -65,7 +65,7 @@ export default function ChangePassword({ email, closePassword }) {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               name="newPassword"
-              placeholder="New Password"
+              placeholder={t('changePassword_newPassword')}
             />
           </div>
           <div>
@@ -74,11 +74,11 @@ export default function ChangePassword({ email, closePassword }) {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               name="confirmPassword"
-              placeholder="Confirm Password"
+              placeholder={t('changePassword_confirmPassword')}
             />
           </div>
           <Button type="submit" style={undefined} disabled={undefined}>
-            Change Password
+            {t('changePassword_button')}
           </Button>
         </form>
         {passwordChangeMessage && <p>{passwordChangeMessage}</p>}

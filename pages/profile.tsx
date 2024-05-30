@@ -10,8 +10,12 @@ import { useState } from "react";
 import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 import Link from "next/link";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Profile({ user }) {
+  const { t } = useTranslation('common');
+
   if (!user) {
     return <p>Loading...</p>;
   }
@@ -48,149 +52,139 @@ export default function Profile({ user }) {
   };
 
   return (
-    <>
-      <Layout>
-        <section className={styles.profileSection}>
-          <div className={styles.profileContainer}>
-            <div className={styles.profileContent}>
-              <div className={styles.profileTop}>
-                <Image
-                  src={user.image || "/user.png"}
-                  width={200}
-                  height={200}
-                  alt={`profile photo of ${user.name}`}
-                />
-                <p>{user.username}</p>
-              </div>
-              <div className={styles.openAll}>
-                <a
-                  onClick={handleOpenAll}
-                  style={{ color: isOpenAll ? "#ff1f1f" : "white" }}
-                >
-                  Open all
-                </a>
-              </div>
-              <div className={styles.profileDetails}>
-                <div
-                  className={styles.title}
-                  onClick={() => handleToggleSection("profileDetails")}
-                >
-                  <h2>Profile Details</h2>
-                  {openSections.profileDetails ? (
-                    <ArrowUpIcon />
-                  ) : (
-                    <ArrowDownIcon />
-                  )}
-                </div>
-                {openSections.profileDetails && (
-                  <>
-                    <div className={styles.name}>
-                      <p>Name: {user.name}</p>
-                      <p>Last Name: {user.lastName}</p>
-                      <p>Email: {user.email}</p>
-                      <p>Country: {user.country}</p>
-                      <p>Position: {user.position}</p>
-                      <p>Created at: {user.createdAt}</p>
-                    </div>
-                  </>
-                )}
-              </div>
+    <Layout>
+      <section className={styles.profileSection}>
+        <div className={styles.profileContainer}>
+          <div className={styles.profileContent}>
+            <div className={styles.profileTop}>
+              <Image
+                src={user.image || "/user.png"}
+                width={200}
+                height={200}
+                alt={`profile photo of ${user.name}`}
+              />
+              <p>{user.username}</p>
             </div>
-            <div className={styles.tournaments}>
-              <div className={styles.joinTournament}>
-                <div
-                  className={styles.title}
-                  onClick={() => handleToggleSection("joinedTournament")}
-                >
-                  <h2>Joined Tournament</h2>
-                  {openSections.joinedTournament ? (
-                    <ArrowUpIcon />
-                  ) : (
-                    <ArrowDownIcon />
-                  )}
-                </div>
-                {openSections.joinedTournament && (
-                  <div className={styles.details}>
-                    {user.joinedTournaments.length > 0 ? (
-                      <ul>
-                        {user.joinedTournaments.map((tournament) => (
-                          <div
-                            className={styles.definedDetails}
-                            key={tournament.id}
-                          >
-                            <Link href={`/tournament/${tournament.id}`}>
-                              {tournament.title}
-                            </Link>
-                            <p>Category: {tournament.category}</p>
-                            <p>Position: {tournament.position}</p>
-                          </div>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No joined tournaments</p>
-                    )}
-                  </div>
-                )}
-              </div>
-              <div className={styles.createdTournament}>
-                <div
-                  className={styles.title}
-                  onClick={() => handleToggleSection("createdTournament")}
-                >
-                  <h2>Created Tournament</h2>
-                  {openSections.createdTournament ? (
-                    <ArrowUpIcon />
-                  ) : (
-                    <ArrowDownIcon />
-                  )}
-                </div>
-                {openSections.createdTournament && (
-                  <div className={styles.details}>
-                    {user.createdTournaments.length > 0 ? (
-                      <ul>
-                        {user.createdTournaments.map((tournament) => (
-                          <div
-                            className={styles.definedDetails}
-                            key={tournament.id}
-                          >
-                            <Link href={`/tournament/${tournament.id}`}>
-                              {tournament.title}
-                            </Link>
-                            <p>Category: {tournament.category}</p>
-                            <p>Position: {tournament.position}</p>
-                          </div>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No created tournaments</p>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className={styles.buttons}>
-              <button className={styles.btn} onClick={handleLogOut}>
-                Log Out
-              </button>
-              <button
-                className={styles.btn}
-                onClick={() => setOpenPassword(!openPassword)}
+            <div className={styles.openAll}>
+              <a
+                onClick={handleOpenAll}
+                style={{ color: isOpenAll ? "#ff1f1f" : "white" }}
               >
-                Change Password
-              </button>
+                {t(isOpenAll ? 'profile_closeAll' : 'profile_openAll')}
+              </a>
+            </div>
+            <div className={styles.profileDetails}>
+              <div
+                className={styles.title}
+                onClick={() => handleToggleSection("profileDetails")}
+              >
+                <h2>{t('profile_details')}</h2>
+                {openSections.profileDetails ? (
+                  <ArrowUpIcon />
+                ) : (
+                  <ArrowDownIcon />
+                )}
+              </div>
+              {openSections.profileDetails && (
+                <div className={styles.name}>
+                  <p>{t('profile_name')}: {user.name}</p>
+                  <p>{t('profile_lastName')}: {user.lastName}</p>
+                  <p>{t('profile_email')}: {user.email}</p>
+                  <p>{t('profile_country')}: {user.country}</p>
+                  <p>{t('profile_position')}: {user.position}</p>
+                  <p>{t('profile_createdAt')}: {user.createdAt}</p>
+                </div>
+              )}
             </div>
           </div>
-        </section>
-        {openPassword && (
-          <div className={styles.changePassword}>
-            <ChangePassword
-              email={user.email}
-              closePassword={() => setOpenPassword(false)}
-            />
+          <div className={styles.tournaments}>
+            <div className={styles.joinTournament}>
+              <div
+                className={styles.title}
+                onClick={() => handleToggleSection("joinedTournament")}
+              >
+                <h2>{t('profile_joinedTournaments')}</h2>
+                {openSections.joinedTournament ? (
+                  <ArrowUpIcon />
+                ) : (
+                  <ArrowDownIcon />
+                )}
+              </div>
+              {openSections.joinedTournament && (
+                <div className={styles.details}>
+                  {user.joinedTournaments.length > 0 ? (
+                    <ul>
+                      {user.joinedTournaments.map((tournament) => (
+                        <div className={styles.definedDetails} key={tournament.id}>
+                          <Link href={`/tournament/${tournament.id}`}>
+                            {tournament.title}
+                          </Link>
+                          <p>{t('profile_category')}: {tournament.category}</p>
+                        </div>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{t('profile_noJoinedTournaments')}</p>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className={styles.createdTournament}>
+              <div
+                className={styles.title}
+                onClick={() => handleToggleSection("createdTournament")}
+              >
+                <h2>{t('profile_createdTournaments')}</h2>
+                {openSections.createdTournament ? (
+                  <ArrowUpIcon />
+                ) : (
+                  <ArrowDownIcon />
+
+                )}
+              </div>
+              {openSections.createdTournament && (
+                <div className={styles.details}>
+                  {user.createdTournaments.length > 0 ? (
+                    <ul>
+                      {user.createdTournaments.map((tournament) => (
+                        <div className={styles.definedDetails} key={tournament.id}>
+                          <Link href={`/tournament/${tournament.id}`}>
+                            {tournament.title}
+                          </Link>
+                          <p>{t('profile_category')}: {tournament.category}</p>
+                        </div>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{t('profile_noCreatedTournaments')}</p>
+                  )}
+                </div>
+              )}
+
+            </div>
           </div>
-        )}
-      </Layout>
-    </>
+          <div className={styles.buttons}>
+            <button className={styles.btn} onClick={handleLogOut}>
+              {t('profile_logOut')}
+            </button>
+            <button
+              className={styles.btn}
+              onClick={() => setOpenPassword(!openPassword)}
+            >
+              {t('profile_changePassword')}
+            </button>
+          </div>
+        </div>
+      </section>
+      {openPassword && (
+        <div className={styles.changePassword}>
+          <ChangePassword
+            email={user.email}
+            closePassword={() => setOpenPassword(false)}
+          />
+        </div>
+      )}
+    </Layout>
   );
 }
 
@@ -246,6 +240,7 @@ export async function getServerSideProps(context) {
     props: {
       user: cleanedUser,
       session: cleanedSession,
+      ...(await serverSideTranslations(context.locale, ['common'])),
     },
   };
 }
