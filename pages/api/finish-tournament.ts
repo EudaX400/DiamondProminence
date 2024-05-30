@@ -7,6 +7,10 @@ export default async function handler(req, res) {
 
   const { tournamentId } = req.body;
 
+  if (!tournamentId) {
+    return res.status(400).json({ message: "Tournament ID is required" });
+  }
+
   try {
     const tournament = await prisma.tournament.findUnique({
       where: { id: tournamentId },
@@ -24,48 +28,39 @@ export default async function handler(req, res) {
       return res.status(404).json({ message: "Tournament not found" });
     }
 
-    const finalMatch = tournament.matches.length === 1 ? tournament.matches[0] : null;
+    const finalMatch = tournament.matches.find(match => match.phase === getCurrentPhase(tournament.matches) - 1);
 
     if (!finalMatch || finalMatch.player1Score === null || finalMatch.player2Score === null) {
-      return res.status(400).json({ message: "Final match not completed" });
+      return res.status(400).json({ message: "Tournament cannot be finalized without a final match result" });
     }
 
+    const winnerId = finalMatch.player1Score > finalMatch.player2Score ? finalMatch.player1Id : finalMatch.player2Id;
+    
     const winner = await prisma.user.findUnique({
-      where: { id: finalMatch.winnerId },
+      where: { id: winnerId },
+      select: { username: true },
     });
-
-    if (!winner) {
-      return res.status(404).json({ message: "Winner not found" });
-    }
-
-    const participantUpdates = tournament.participants.map((participant) => {
-      let position;
-      if (participant.user.id === finalMatch.winnerId) {
-        position = "Winner";
-      } else if (participant.user.id === finalMatch.player1Id || participant.user.id === finalMatch.player2Id) {
-        position = "Finalist";
-      } else {
-        position = "Participant";
-      }
-
-      return {
-        where: { tournamentId_userId: { tournamentId: tournament.id, userId: participant.user.id } },
-        data: { position: position },
-      };
-    });
-
-    await prisma.$transaction(
-      participantUpdates.map((update) => prisma.tournamentParticipant.update(update))
-    );
 
     await prisma.tournament.update({
       where: { id: tournamentId },
-      data: { finishedAt: new Date() },
+      data: {
+        winnerId: winnerId,
+        finishedAt: new Date(),
+      },
     });
 
-    return res.status(200).json({ winner: winner });
+    return res.status(200).json({ message: "Tournament finalized successfully", winner: winner.username });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Error finalizing tournament" });
+    console.error("Error finalizing tournament:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
+}
+
+// Utilidad para obtener la fase actual
+function getCurrentPhase(matches) {
+  if (matches.length === 0) return 1;
+  const maxPhase = matches.reduce((max, match) => Math.max(max, match.phase), 1);
+  const currentPhaseMatches = matches.filter(match => match.phase === maxPhase);
+  const allCurrentPhaseMatchesCompleted = currentPhaseMatches.every(match => match.winnerId);
+  return allCurrentPhaseMatchesCompleted ? maxPhase + 1 : maxPhase;
 }

@@ -1,19 +1,43 @@
-import prisma from '../../lib/prisma';
+import { getServerSession } from "next-auth";
+import prisma from "../../lib/prisma";
+import { authOptions } from "../../lib/auth";
 
 export default async function handle(req, res) {
-  const { tournamentId, userId } = req.body;
+  if (req.method === "POST") {
+    const session = await getServerSession(req, res, authOptions);
 
-  try {
-    const participant = await prisma.tournamentParticipant.create({
-      data: {
-        tournamentId,
-        userId,
-      },
-    });
+    if (!session) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
 
-    res.json({ message: "Successfully joined the tournament!", tournamentId });
-  } catch (error) {
-    console.error("Error joining tournament:", error);
-    res.status(500).json({ error: "Error joining tournament" });
+    const { tournamentId, userId, password } = req.body;
+
+    try {
+      const tournament = await prisma.tournament.findUnique({
+        where: { id: tournamentId },
+      });
+
+      if (!tournament) {
+        return res.status(404).json({ error: "Tournament not found" });
+      }
+
+      if (tournament.private && tournament.privatePassword !== password) {
+        return res.status(403).json({ error: "Incorrect password" });
+      }
+
+      const participant = await prisma.tournamentParticipant.create({
+        data: {
+          tournamentId,
+          userId,
+        },
+      });
+
+      res.status(200).json(participant);
+    } catch (error) {
+      console.error("Error joining tournament:", error);
+      res.status(500).json({ error: "Error joining tournament", details: error });
+    }
+  } else {
+    res.status(405).json({ error: "Method not allowed" });
   }
 }

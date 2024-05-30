@@ -17,7 +17,6 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   });
 
-  // Convertir las fechas a strings
   const serializedFeed: TournamentProps[] = feed.map((tournament) => ({
     ...tournament,
     createdAt: tournament.createdAt.toISOString(),

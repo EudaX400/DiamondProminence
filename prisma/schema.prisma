@@ -22,6 +22,8 @@ model Tournament {
   matches         Match[]
   createdAt       DateTime            @default(now()) @map("created_at")
   finishedAt      DateTime
+  winnerId        String?             @map("winner_id")
+  winner          User?               @relation(fields: [winnerId], references: [id], name: "UserWinnerTournaments") // Add this line
 }
 
 model User {
@@ -41,6 +43,7 @@ model User {
   matchesPlayer1      Match[]                  @relation("MatchPlayer1")
   matchesPlayer2      Match[]                  @relation("MatchPlayer2")
   matchesWon          Match[]                  @relation("MatchWinner")
+  winnerTournaments   Tournament[]             @relation("UserWinnerTournaments") // Add this line
 }
 
 model TournamentParticipant {
@@ -64,6 +67,7 @@ model Match {
   player1Score  Int
   player2Score  Int
   winnerId      String?
+  phase         Int       // Nueva propiedad para la fase
   createdAt     DateTime  @default(now())
 
   tournament    Tournament  @relation(fields: [tournamentId], references: [id])

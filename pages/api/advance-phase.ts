@@ -1,61 +1,55 @@
-import { getServerSession } from "next-auth";
-import prisma from "../../lib/prisma";
-import { authOptions } from "../../lib/auth";
+import prisma from '../../lib/prisma';
 
-export default async function handle(req, res) {
-  if (req.method === "POST") {
-    const session = await getServerSession(req, res, authOptions);
-
-    if (!session) {
-      return res.status(401).json({ error: "Not authenticated" });
-    }
-
-    const { tournamentId } = req.body;
-
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
     try {
-      const tournament = await prisma.tournament.findUnique({
-        where: { id: tournamentId },
-        include: {
-          matches: {
-            where: { winnerId: { not: null } },
-            include: {
-              winner: true,
-            },
-          },
-        },
+      const { tournamentId } = req.body;
+
+      
+      const matches = await prisma.match.findMany({
+        where: { tournamentId: tournamentId },
       });
 
-      if (!tournament) {
-        return res.status(404).json({ error: "Tournament not found" });
+      
+      const currentPhase = Math.max(...matches.map(match => match.phase));
+
+     
+      const allCurrentPhaseMatchesCompleted = matches
+        .filter(match => match.phase === currentPhase)
+        .every(match => match.winnerId);
+
+      if (!allCurrentPhaseMatchesCompleted) {
+        return res.status(400).json({ error: 'Not all matches in the current phase are completed' });
       }
 
-      const winners = tournament.matches.map(match => match.winner);
-      if (winners.length < 2) {
-        return res.status(400).json({ error: "Not enough winners to advance" });
-      }
+      
+      const winners = matches
+        .filter(match => match.phase === currentPhase)
+        .map(match => match.winnerId);
 
+      
       const newMatches = [];
       for (let i = 0; i < winners.length; i += 2) {
         if (i + 1 < winners.length) {
-          const match = await prisma.match.create({
-            data: {
-              tournamentId: tournament.id,
-              player1Id: winners[i].id,
-              player2Id: winners[i + 1].id,
-              player1Score: 0,
-              player2Score: 0,
-            },
+          newMatches.push({
+            tournamentId: tournamentId,
+            player1Id: winners[i],
+            player2Id: winners[i + 1],
+            player1Score: 0, 
+            player2Score: 0, 
+            phase: currentPhase + 1,
           });
-          newMatches.push(match);
         }
       }
 
-      res.status(200).json({ matches: newMatches });
+      await prisma.match.createMany({ data: newMatches });
+
+      res.status(200).json({ message: 'Phase advanced' });
     } catch (error) {
-      console.error("Error advancing phase:", error);
-      res.status(500).json({ error: "Error advancing phase", details: error.message });
+      console.error('Error advancing phase:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
   } else {
-    res.status(405).json({ error: "Method not allowed" });
+    res.status(405).json({ error: 'Method not allowed' });
   }
 }

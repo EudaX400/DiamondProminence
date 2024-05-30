@@ -10,20 +10,32 @@ import { useRouter } from "next/router";
 const TournamentPage = ({ tournament }) => {
   const { data: session } = useSession();
   const [matches, setMatches] = useState(tournament.matches);
-  const [phase, setPhase] = useState(0); // Inicializa en 0 y se actualizará en useEffect
+  const [phase, setPhase] = useState(1);
   const [winner, setWinner] = useState(null);
+  const [openManagement, setOpenManagement] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    setPhase(getCurrentPhase(tournament.matches)); // Actualiza la fase cuando cambian los partidos
+    setPhase(getCurrentPhase(tournament.matches));
   }, [tournament.matches]);
 
-  // Función para calcular la fase actual
   const getCurrentPhase = (matches) => {
-    if (matches.length === 1) return 1; // Solo un partido significa que es la fase final
-    const phase1Matches = matches.filter((match) => !match.winnerId); // Los partidos sin ganador aún están en la fase 1
-    if (phase1Matches.length === matches.length) return 1; // Todos los partidos están todavía en la fase 1
-    return 2; // De lo contrario, estamos en la fase 2
+    if (matches.length === 0) return 1;
+    const maxPhase = matches.reduce(
+      (max, match) => Math.max(max, match.phase),
+      1
+    );
+    const currentPhaseMatches = matches.filter(
+      (match) => match.phase === maxPhase
+    );
+    const allCurrentPhaseMatchesCompleted = currentPhaseMatches.every(
+      (match) => match.winnerId
+    );
+    return allCurrentPhaseMatchesCompleted ? maxPhase + 1 : maxPhase;
+  };
+
+  const calculateTotalPhases = (numParticipants) => {
+    return Math.ceil(Math.log2(numParticipants));
   };
 
   const createMatches = async () => {
@@ -71,23 +83,24 @@ const TournamentPage = ({ tournament }) => {
     }
   };
 
-  const finalizeTournament = async () => {
+  const finalizeTournament = async (tournamentId) => {
     try {
       const response = await fetch("/api/finish-tournament", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ tournamentId: tournament.id }),
+        body: JSON.stringify({ tournamentId }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        setWinner(data.winner.name);
-        router.reload();
-      } else {
-        console.error("Error finalizing tournament");
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to finalize tournament");
       }
+
+      const data = await response.json();
+      setWinner(data.winner);
+      console.log("Tournament finalized successfully:", data);
     } catch (error) {
       console.error("Error finalizing tournament:", error);
     }
@@ -122,7 +135,12 @@ const TournamentPage = ({ tournament }) => {
     );
   };
 
-  const isFinalMatch = matches.length === 1;
+  const totalPhases = calculateTotalPhases(tournament.numPlayers);
+  const isFinalPhase = phase > totalPhases;
+
+  const handleOpenManagement = (matchId) => {
+    setOpenManagement(openManagement === matchId ? null : matchId);
+  };
 
   return (
     <Layout>
@@ -130,21 +148,25 @@ const TournamentPage = ({ tournament }) => {
         <h1>{tournament.title}</h1>
         <p>{tournament.description}</p>
         <p>Category: {tournament.category}</p>
+        <p>Start date: {tournament.createdAt}</p>
+        <p>Finish date: {tournament.finishedAt ?? "Not finished"}</p>
 
-        <Bracket matches={matches} />
+        <h2>Bracket</h2>
+
+        <Bracket matches={matches} openManagement={handleOpenManagement} />
 
         {session?.user?.id === tournament.ownerId && (
           <div className={styles.buttons}>
-            {phase === 0 || !tournament.matches.length ? (
+            {!matches.length ? (
               <button onClick={createMatches}>Start Tournament</button>
             ) : (
               <>
-                {!isFinalMatch ? (
+                {!isFinalPhase ? (
                   <button onClick={advancePhase} disabled={!canAdvancePhase()}>
                     Next Phase
                   </button>
                 ) : (
-                  <button onClick={finalizeTournament}>
+                  <button onClick={() => finalizeTournament(tournament.id)}>
                     Finalize Tournament
                   </button>
                 )}
@@ -153,24 +175,18 @@ const TournamentPage = ({ tournament }) => {
           </div>
         )}
 
-        <h2>Tournament Matches</h2>
         {matches.map((match) => (
           <div key={match.id}>
-            <div className={styles.userMathces}>
-              <h3>
-                {match.player1?.name ?? "Unknown"} vs{" "}
-                {match.player2?.name ?? "Unknown"}
-              </h3>
-              <p>
-                Score: {match.player1Score} - {match.player2Score}
-              </p>
-            </div>
-            {session?.user?.id === tournament.ownerId && (
-              <MatchManagement
-                match={match}
-                onUpdateScore={handleUpdateScore}
-              />
-            )}
+            {session?.user?.id === tournament.ownerId &&
+              openManagement === match.id && (
+                <>
+                  <h2>Tournament Matches</h2>
+                  <MatchManagement
+                    match={match}
+                    onUpdateScore={handleUpdateScore}
+                  />
+                </>
+              )}
           </div>
         ))}
 
@@ -186,6 +202,8 @@ const TournamentPage = ({ tournament }) => {
   );
 };
 
+export default TournamentPage;
+
 export const getServerSideProps = async (context) => {
   const { id } = context.params;
 
@@ -200,9 +218,9 @@ export const getServerSideProps = async (context) => {
         },
         matches: {
           include: {
-            player1: { select: { name: true } },
-            player2: { select: { name: true } },
-            winner: { select: { name: true } },
+            player1: { select: { id: true, username: true } },
+            player2: { select: { id: true, username: true } },
+            winner: { select: { id: true, username: true } },
           },
         },
       },
@@ -234,6 +252,7 @@ export const getServerSideProps = async (context) => {
         player2: match.player2 ? { ...match.player2 } : null,
         winner: match.winner ? { ...match.winner } : null,
         createdAt: match.createdAt.toISOString(),
+        phase: match.phase,
       })),
     };
 
@@ -250,5 +269,3 @@ export const getServerSideProps = async (context) => {
     };
   }
 };
-
-export default TournamentPage;

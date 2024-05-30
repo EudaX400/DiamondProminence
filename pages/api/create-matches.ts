@@ -7,10 +7,13 @@ export default async function handle(req, res) {
     const session = await getServerSession(req, res, authOptions);
 
     if (!session) {
+      console.error("Not authenticated");
       return res.status(401).json({ error: "Not authenticated" });
     }
 
     const { tournamentId } = req.body;
+
+    console.log("Tournament ID received:", tournamentId); // Log para verificar el ID del torneo recibido
 
     try {
       const tournament = await prisma.tournament.findUnique({
@@ -25,14 +28,18 @@ export default async function handle(req, res) {
       });
 
       if (!tournament) {
+        console.error("Tournament not found");
         return res.status(404).json({ error: "Tournament not found" });
       }
 
       const participants = tournament.participants;
 
       if (participants.length < 2) {
+        console.error("Not enough participants");
         return res.status(400).json({ error: "Not enough participants" });
       }
+
+      console.log("Participants:", participants); // Log para verificar los participantes
 
       const shuffledParticipants = participants.sort(() => Math.random() - 0.5);
       const matches = [];
@@ -46,11 +53,14 @@ export default async function handle(req, res) {
               player2Id: shuffledParticipants[i + 1].userId,
               player1Score: 0,
               player2Score: 0,
+              phase: 1, // Inicializamos la fase en 1
             },
           });
           matches.push(match);
         }
       }
+
+      console.log("Matches created:", matches); // Log para verificar los partidos creados
 
       res.status(200).json({ message: "Matches created successfully", matches });
     } catch (error) {

@@ -15,12 +15,12 @@ const MatchManagement = ({ match, onUpdateScore }) => {
   return (
     <div className={styles.match}>
       <h3>
-        {match.player1?.name ?? "Unknown"} vs {match.player2?.name ?? "Unknown"}
+        {match.player1?.username ?? "Unknown"} vs {match.player2?.username ?? "Unknown"}
       </h3>
       <div className={styles.matchForm}>
         <form onSubmit={handleSubmit}>
           <label>
-            {match.player1?.name ?? "Unknown"} Score:
+            {match.player1?.username ?? "Unknown"} Score:
             <div className={styles.matchInput}>
               <Input
                 type="number"
@@ -32,7 +32,7 @@ const MatchManagement = ({ match, onUpdateScore }) => {
             </div>
           </label>
           <label>
-            {match.player2?.name ?? "Unknown"} Score:
+            {match.player2?.username ?? "Unknown"} Score:
             <div className={styles.matchInput}>
               <Input
                 type="number"
