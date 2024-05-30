@@ -8,8 +8,8 @@ import { Input } from "../components/Forms/Inputs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ButtonClick } from "../components/Buttons/ButtonClick";
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const feed = await prisma.tournament.findMany({
@@ -30,7 +30,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {
     props: {
       feed: serializedFeed,
-      ...(await serverSideTranslations(locale, ['common'])),
+      ...(await serverSideTranslations(locale, ["common"])),
     },
     revalidate: 10,
   };
@@ -41,8 +41,8 @@ type Props = {
 };
 
 const Main: React.FC<Props> = (props) => {
-  const { t } = useTranslation('common');
-  const { data: session } = useSession();
+  const { t } = useTranslation("common");
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [code, setCode] = useState("");
   const [name, setName] = useState("");
@@ -52,6 +52,12 @@ const Main: React.FC<Props> = (props) => {
   const [selectedTournament, setSelectedTournament] = useState(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   const handleSearch = async () => {
     try {
@@ -76,7 +82,7 @@ const Main: React.FC<Props> = (props) => {
 
   const handleJoin = async (tournament) => {
     if (!session) {
-      alert(t('join_notLoggedIn'));
+      alert(t("join_notLoggedIn"));
       return;
     }
 
@@ -102,16 +108,16 @@ const Main: React.FC<Props> = (props) => {
       });
 
       if (response.ok) {
-        setMessage(t('join_success'));
+        setMessage(t("join_success"));
         setTimeout(() => {
           router.push(`/tournament/${tournamentId}`);
         }, 2000);
       } else {
         const error = await response.json();
-        setMessage(error.error); 
+        setMessage(error.error);
       }
     } catch (error) {
-      console.error(t('join_error'), error);
+      console.error(t("join_error"), error);
     }
   };
 
@@ -139,32 +145,32 @@ const Main: React.FC<Props> = (props) => {
     <Layout>
       <div className={styles.customBackground}>
         <div className={styles.container}>
-          <h1 className={styles.title}>{t('join_title')}</h1>
+          <h1 className={styles.title}>{t("join_title")}</h1>
           <div className={styles.searchGroup}>
             <label className={styles.label} htmlFor="code">
-              {t('join_tournamentCode')}
+              {t("join_tournamentCode")}
             </label>
             <Input
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
               name="code"
-              placeholder={t('join_enterCode')}
+              placeholder={t("join_enterCode")}
             />
           </div>
           <div className={styles.searchGroup}>
             <label className={styles.label} htmlFor="name">
-              {t('join_tournamentName')}
+              {t("join_tournamentName")}
             </label>
             <Input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               name="name"
-              placeholder={t('join_enterName')}
+              placeholder={t("join_enterName")}
             />
           </div>
-          <ButtonClick onClick={handleSearch}>{t('join_search')}</ButtonClick>
+          <ButtonClick onClick={handleSearch}>{t("join_search")}</ButtonClick>
           <div className={styles.line}></div>
           {message && <p className={styles.message}>{message}</p>}
           <div className={styles.results}>
@@ -179,22 +185,24 @@ const Main: React.FC<Props> = (props) => {
                 <h2>{tournament.title}</h2>
                 <p>{tournament.category}</p>
                 {tournament.private && (
-                  <p className={styles.private}>{t('join_private')}</p>
+                  <p className={styles.private}>{t("join_private")}</p>
                 )}
               </div>
             ))}
           </div>
-          {loading && <p>{t('join_loading')}</p>}
+          {loading && <p>{t("join_loading")}</p>}
         </div>
         {selectedTournament && (
           <div className={styles.modal}>
             <div className={styles.modalContent}>
-              <h2>{t('join_enterPassword')} {selectedTournament.title}</h2>
+              <h2>
+                {t("join_enterPassword")} {selectedTournament.title}
+              </h2>
               <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder={t('join_password')}
+                placeholder={t("join_password")}
                 name={"Password"}
               />
               <div className={styles.btn}>
@@ -203,10 +211,10 @@ const Main: React.FC<Props> = (props) => {
                     joinTournament(selectedTournament.id, password)
                   }
                 >
-                  {t('join_join')}
+                  {t("join_join")}
                 </ButtonClick>
                 <ButtonClick onClick={() => setSelectedTournament(null)}>
-                  {t('join_cancel')}
+                  {t("join_cancel")}
                 </ButtonClick>
               </div>
             </div>

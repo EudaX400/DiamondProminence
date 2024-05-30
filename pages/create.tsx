@@ -54,7 +54,10 @@ const Main: React.FC<Props> = (props) => {
   const [isPrime, setIsPrime] = useState(false);
 
   useEffect(() => {
-    if (status === "authenticated") {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    } else if (status === "authenticated") {
+
       const checkPrimeStatus = async () => {
         try {
           const response = await fetch("/api/check-prime");

@@ -10,11 +10,12 @@ import { useState } from "react";
 import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 import Link from "next/link";
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import { LinkButton } from "../components/Buttons/LinkButton";
 
 export default function Profile({ user }) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation("common");
 
   if (!user) {
     return <p>Loading...</p>;
@@ -64,13 +65,18 @@ export default function Profile({ user }) {
                 alt={`profile photo of ${user.name}`}
               />
               <p>{user.username}</p>
+              {!user.prime && (
+                <div className={styles.premium}>
+                  <LinkButton href="/prime">Get Prime</LinkButton>
+                </div>
+              )}
             </div>
             <div className={styles.openAll}>
               <a
                 onClick={handleOpenAll}
                 style={{ color: isOpenAll ? "#ff1f1f" : "white" }}
               >
-                {t(isOpenAll ? 'profile_closeAll' : 'profile_openAll')}
+                {t(isOpenAll ? "profile_closeAll" : "profile_openAll")}
               </a>
             </div>
             <div className={styles.profileDetails}>
@@ -78,7 +84,7 @@ export default function Profile({ user }) {
                 className={styles.title}
                 onClick={() => handleToggleSection("profileDetails")}
               >
-                <h2>{t('profile_details')}</h2>
+                <h2>{t("profile_details")}</h2>
                 {openSections.profileDetails ? (
                   <ArrowUpIcon />
                 ) : (
@@ -87,12 +93,24 @@ export default function Profile({ user }) {
               </div>
               {openSections.profileDetails && (
                 <div className={styles.name}>
-                  <p>{t('profile_name')}: {user.name}</p>
-                  <p>{t('profile_lastName')}: {user.lastName}</p>
-                  <p>{t('profile_email')}: {user.email}</p>
-                  <p>{t('profile_country')}: {user.country}</p>
-                  <p>{t('profile_position')}: {user.position}</p>
-                  <p>{t('profile_createdAt')}: {user.createdAt}</p>
+                  <p>
+                    {t("profile_name")}: {user.name}
+                  </p>
+                  <p>
+                    {t("profile_lastName")}: {user.lastName}
+                  </p>
+                  <p>
+                    {t("profile_email")}: {user.email}
+                  </p>
+                  <p>
+                    {t("profile_country")}: {user.country}
+                  </p>
+                  <p>
+                    {t("profile_position")}: {user.position}
+                  </p>
+                  <p>
+                    {t("profile_createdAt")}: {user.createdAt}
+                  </p>
                 </div>
               )}
             </div>
@@ -103,7 +121,7 @@ export default function Profile({ user }) {
                 className={styles.title}
                 onClick={() => handleToggleSection("joinedTournament")}
               >
-                <h2>{t('profile_joinedTournaments')}</h2>
+                <h2>{t("profile_joinedTournaments")}</h2>
                 {openSections.joinedTournament ? (
                   <ArrowUpIcon />
                 ) : (
@@ -115,16 +133,21 @@ export default function Profile({ user }) {
                   {user.joinedTournaments.length > 0 ? (
                     <ul>
                       {user.joinedTournaments.map((tournament) => (
-                        <div className={styles.definedDetails} key={tournament.id}>
+                        <div
+                          className={styles.definedDetails}
+                          key={tournament.id}
+                        >
                           <Link href={`/tournament/${tournament.id}`}>
                             {tournament.title}
                           </Link>
-                          <p>{t('profile_category')}: {tournament.category}</p>
+                          <p>
+                            {t("profile_category")}: {tournament.category}
+                          </p>
                         </div>
                       ))}
                     </ul>
                   ) : (
-                    <p>{t('profile_noJoinedTournaments')}</p>
+                    <p>{t("profile_noJoinedTournaments")}</p>
                   )}
                 </div>
               )}
@@ -134,12 +157,11 @@ export default function Profile({ user }) {
                 className={styles.title}
                 onClick={() => handleToggleSection("createdTournament")}
               >
-                <h2>{t('profile_createdTournaments')}</h2>
+                <h2>{t("profile_createdTournaments")}</h2>
                 {openSections.createdTournament ? (
                   <ArrowUpIcon />
                 ) : (
                   <ArrowDownIcon />
-
                 )}
               </div>
               {openSections.createdTournament && (
@@ -147,31 +169,35 @@ export default function Profile({ user }) {
                   {user.createdTournaments.length > 0 ? (
                     <ul>
                       {user.createdTournaments.map((tournament) => (
-                        <div className={styles.definedDetails} key={tournament.id}>
+                        <div
+                          className={styles.definedDetails}
+                          key={tournament.id}
+                        >
                           <Link href={`/tournament/${tournament.id}`}>
                             {tournament.title}
                           </Link>
-                          <p>{t('profile_category')}: {tournament.category}</p>
+                          <p>
+                            {t("profile_category")}: {tournament.category}
+                          </p>
                         </div>
                       ))}
                     </ul>
                   ) : (
-                    <p>{t('profile_noCreatedTournaments')}</p>
+                    <p>{t("profile_noCreatedTournaments")}</p>
                   )}
                 </div>
               )}
-
             </div>
           </div>
           <div className={styles.buttons}>
             <button className={styles.btn} onClick={handleLogOut}>
-              {t('profile_logOut')}
+              {t("profile_logOut")}
             </button>
             <button
               className={styles.btn}
               onClick={() => setOpenPassword(!openPassword)}
             >
-              {t('profile_changePassword')}
+              {t("profile_changePassword")}
             </button>
           </div>
         </div>
@@ -240,7 +266,7 @@ export async function getServerSideProps(context) {
     props: {
       user: cleanedUser,
       session: cleanedSession,
-      ...(await serverSideTranslations(context.locale, ['common'])),
+      ...(await serverSideTranslations(context.locale, ["common"])),
     },
   };
 }
