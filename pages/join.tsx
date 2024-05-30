@@ -102,7 +102,7 @@ const Main: React.FC<Props> = (props) => {
         }, 2000);
       } else {
         const error = await response.json();
-        setMessage(error.error);
+        setMessage(error.error); 
       }
     } catch (error) {
       console.error("Error joining the tournament:", error);

@@ -114,11 +114,15 @@ export default function Profile({ user }) {
                     {user.joinedTournaments.length > 0 ? (
                       <ul>
                         {user.joinedTournaments.map((tournament) => (
-                          <div className={styles.definedDetails} key={tournament.id}>
+                          <div
+                            className={styles.definedDetails}
+                            key={tournament.id}
+                          >
                             <Link href={`/tournament/${tournament.id}`}>
                               {tournament.title}
                             </Link>
                             <p>Category: {tournament.category}</p>
+                            <p>Position: {tournament.position}</p>
                           </div>
                         ))}
                       </ul>
@@ -145,11 +149,15 @@ export default function Profile({ user }) {
                     {user.createdTournaments.length > 0 ? (
                       <ul>
                         {user.createdTournaments.map((tournament) => (
-                          <div className={styles.definedDetails} key={tournament.id}>
+                          <div
+                            className={styles.definedDetails}
+                            key={tournament.id}
+                          >
                             <Link href={`/tournament/${tournament.id}`}>
                               {tournament.title}
                             </Link>
                             <p>Category: {tournament.category}</p>
+                            <p>Position: {tournament.position}</p>
                           </div>
                         ))}
                       </ul>
@@ -188,7 +196,6 @@ export default function Profile({ user }) {
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  console.log("Session:", session);
 
   if (!session) {
     return {
@@ -213,11 +220,14 @@ export async function getServerSideProps(context) {
     },
   });
 
-  // Organize the user data
   const userData = {
     ...session.user,
     createdTournaments: user?.tournaments || [],
-    joinedTournaments: user?.participants.map((p) => p.tournament) || [],
+    joinedTournaments:
+      user?.participants.map((p) => ({
+        ...p.tournament,
+        position: p.position,
+      })) || [],
   };
 
   const cleanedUser = JSON.parse(
