@@ -1,0 +1,38 @@
+{
+  "welcome": "Benvingut",
+  "login": "Iniciar sessió",
+  "signup": "Registrar-se",
+  "forgotPassword": "Has oblidat la teva contrasenya?",
+  "requestReset": "Sol·licitar restabliment de contrasenya",
+  "resetPassword": "Restablir contrasenya",
+  "diamond_prominence": "Diamond Prominence",
+  "welcome_message": "Benvingut a Diamond Prominence!",
+  "view": "Veure",
+  "view_tournament": "Veure Torneig",
+  "join": "Unir-se",
+  "join_tournament": "Unir-se al Torneig",
+  "create": "Crear",
+  "create_tournament": "Crear Torneig",
+  
+  "create1": "Aquí podràs crear qualsevol torneig des de zero amb facilitat:",
+  "create2": "Posa-li un nom: Personalitza el nom del teu torneig per reflectir-ne l’esperit.",
+  "create3": "Afegeix una categoria: Classifica el teu torneig segons l’esport, el joc o l’activitat.",
+  "create4": "Defineix el nombre de participants: Decideix quants jugadors o equips hi poden participar.",
+  "create5": "Estableix una data d’inici: Escull el dia d’inici del torneig.",
+  "create6": "Afegeix una descripció: Escriu una descripció detallada per proporcionar tota la informació necessària.",
+  "create7": "Defineix la privacitat: Tria si el torneig serà privat o públic.",
+  "create8": "*Aquestes funcionalitats exclusives estan disponibles només per als usuaris Prèmium.",
+
+  "join1": "Aquí podràs unir-te a qualsevol torneig amb facilitat:",
+  "join2": "Busca un torneig: Utilitza el nostre potent motor de cerca per trobar el torneig que més t'interessa.",
+  "join3": "Revisa els detalls: Consulta la informació detallada del torneig, incloent-hi la categoria, nombre de participants i la data d'inici.",
+  "join4": "Inscripció immediata pública: Uneix-te directament als tornejos públics sense necessitat d'aprovació.",
+  "join5": "Inscripció privada: Uneix-te directament als tornejos privats utilitzant la contrasenya que et proporcionarà el creador.",
+  "join6": "*Aquestes funcionalitats estan disponibles per a tots els usuaris.",
+
+  "view1": "Aquí podràs veure tots els tornejos disponibles amb facilitat:",
+  "view2": "Filtra per preferències: Utilitza els nostres filtres avançats per trobar els tornejos que s'ajustin millor als teus interessos.",
+  "view3": "Consulta els detalls: Obtén informació completa sobre cada torneig, la descripció i els participants.",
+  "view4": "Explora la llista de tornejos: Navega per la nostra àmplia selecció de tornejos.",
+  "view5": "*Aquestes funcionalitats estan disponibles per a tots els usuaris."
+}

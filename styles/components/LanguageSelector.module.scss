@@ -1,0 +1,16 @@
+.languageSelector {
+  select {
+    background-color: #ffffff;
+    color: #161616;
+    border: px solid #ffffff;
+    padding: 0.1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+
+    option {
+      background-color: #ffffff;
+      color: #161616;
+    }
+  }
+}

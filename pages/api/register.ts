@@ -15,6 +15,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: "All fields are required" });
     }
 
+    // Validación de contraseña
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+    if (!passwordRegex.test(password)) {
+      return res.status(400).json({
+        message: "Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, and one number.",
+      });
+    }
+
     const hashed_password = await hash(password, 12);
 
     const user = await prisma.user.create({

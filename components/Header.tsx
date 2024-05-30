@@ -7,6 +7,7 @@ import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 import { MobileHeader } from "./MobileHeader";
 import { MenuMobileIcon } from "../public/icons/MenuMobileIcon";
+import { LanguageSelector } from "./LanguageSelector";
 
 const Header = ({ isOpenMobile, setIsOpenMobile }) => {
   const { data: session, status } = useSession();
@@ -35,6 +36,9 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
       <section className={styles.header}>
         {showTopMenu && (
           <div className={styles.topMenu}>
+            <div className={styles.language}>
+              <LanguageSelector />
+            </div>
             <p>Diamond Prominence</p>
           </div>
         )}
@@ -59,16 +63,16 @@ const Header = ({ isOpenMobile, setIsOpenMobile }) => {
             </div>
             {showOptions && (
               <div className={styles.tournamentOptions}>
-                <Link href="">Create</Link>
+                <Link href="/create">Create</Link>
                 <div className={styles.divider} />
-                <Link href="">Join</Link>
+                <Link href="/join">Join</Link>
                 <div className={styles.divider} />
-                <Link href="">View</Link>
+                <Link href="/view">View</Link>
               </div>
             )}
           </div>
           <Link href="/contact">Contact</Link>
-          <Link href="/about">About Us</Link>
+          <Link href="/about-us">About Us</Link>
           <div className={styles.userContainer}>
             {status === "authenticated" ? (
               <Link href="/profile">

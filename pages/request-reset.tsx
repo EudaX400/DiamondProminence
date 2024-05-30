@@ -1,57 +1,69 @@
-import { useState } from 'react';
-import styles from '../styles/pages/requestReset.module.scss';
+import { useState } from "react";
+import { useRouter } from "next/router";
+import styles from "../styles/pages/requestReset.module.scss";
+import { Input } from "../components/Forms/Inputs";
 
-const RequestReset = () => {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+export default function RequestResetPage() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
     try {
-      const res = await fetch('/api/request-reset', {
-        method: 'POST',
+      const response = await fetch("/api/request-reset", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email }),
       });
 
-      const data = await res.json();
+      const data = await response.json();
 
       if (data.success) {
-        setMessage('Check your email for the verification code.');
-        setError('');
+        setSuccess(true);
+        router.push("/reset-password"); // Redireccionar a la página de restablecimiento de contraseña
       } else {
-        setError(data.error);
-        setMessage('');
+        setError(data.error || "Something went wrong");
       }
     } catch (err) {
-      setError('An error occurred. Please try again.');
-      setMessage('');
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <section className={styles.section}>
+    <div className={`${styles.customBackground}`}>
+    <div className={styles.section}>
       <div className={styles.container}>
-        <h1>Reset Password</h1>
+        <h1>Request Password Reset</h1>
         <form onSubmit={handleSubmit} className={styles.form}>
-          <input
+          <Input
             type="email"
+            placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            required
+            name={undefined}
           />
-          <button type="submit">Send Verification Code</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Sending..." : "Send Reset Email"}
+          </button>
+          {error && <p className={styles.error}>{error}</p>}
+          {success && (
+            <p className={styles.message}>
+              Check your email for the verification code
+            </p>
+          )}
         </form>
-        {message && <p className={styles.message}>{message}</p>}
-        {error && <p className={styles.error}>{error}</p>}
       </div>
-    </section>
+    </div>
+    </div>
   );
-};
-
-export default RequestReset;
+}

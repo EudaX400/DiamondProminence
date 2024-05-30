@@ -1,0 +1,38 @@
+{
+  "welcome": "Welcome",
+  "login": "Log In",
+  "signup": "Sign Up",
+  "forgotPassword": "Forgot your password?",
+  "requestReset": "Request Password Reset",
+  "resetPassword": "Reset Password",
+  "diamond_prominence": "Diamond Prominence",
+  "welcome_message": "Welcome to Diamond Prominence!",
+  "view": "View",
+  "view_tournament": "View Tournament",
+  "join": "Join",
+  "join_tournament": "Join Tournament",
+  "create": "Create",
+  "create_tournament": "Create Tournament",
+
+  "create1": "Here you can create any tournament from scratch with ease:",
+  "create2": "Give it a name: Customize the name of your tournament to reflect its spirit.",
+  "create3": "Add a category: Classify your tournament according to the sport, game, or activity.",
+  "create4": "Define the number of participants: Decide how many players or teams can participate.",
+  "create5": "Set a start date: Choose the start day of the tournament.",
+  "create6": "Add a description: Write a detailed description to provide all necessary information.",
+  "create7": "Set privacy: Choose whether the tournament will be private or public.",
+  "create8": "*These exclusive features are available only for Premium users.",
+
+  "join1": "Here you can join any tournament with ease:",
+  "join2": "Search for a tournament: Use our powerful search engine to find the tournament that interests you the most.",
+  "join3": "Review the details: Check the detailed information of the tournament, including the category, number of participants, and start date.",
+  "join4": "Immediate public registration: Join public tournaments directly without approval.",
+  "join5": "Private registration: Join private tournaments directly using the password provided by the creator.",
+  "join6": "*These features are available for all users.",
+  
+  "view1": "Here you can view all available tournaments with ease:",
+  "view2": "Filter by preferences: Use our advanced filters to find the tournaments that best match your interests.",
+  "view3": "Check the details: Get complete information about each tournament, the description, and the participants.",
+  "view4": "Explore the tournament list: Browse through our wide selection of tournaments.",
+  "view5": "*These features are available for all users."
+}

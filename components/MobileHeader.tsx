@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowUpIcon } from "../public/icons/ArrowUpIcon";
 import { ArrowDownIcon } from "../public/icons/ArrowDownIcon";
 import { useState } from "react";
-import { url } from "inspector";
+import { LanguageSelectorMobile } from "./LanguageSelectorMobile"; // Importar el nuevo selector de idioma
 
 export const MobileHeader = ({ isOpenMobile, setIsOpenMobile, showOptions, setShowOptions }) => {
     return (
@@ -41,14 +41,15 @@ export const MobileHeader = ({ isOpenMobile, setIsOpenMobile, showOptions, setSh
                     </div>
                     {showOptions && (
                         <div className={styles.tournamentOptions}>
-                            <Link href={""}>Create</Link>
-                            <Link href={""}>Join</Link>
-                            <Link href={""}>View</Link>
+                            <Link href={"/create"}>Create</Link>
+                            <Link href={"/join"}>Join</Link>
+                            <Link href={"/view"}>View</Link>
                         </div>
                     )}
                 </div>
-                <Link href={""}>Contact</Link>
-                <Link href={""}>About Us</Link>
+                <LanguageSelectorMobile />
+                <Link href={"/contact"}>Contact</Link>
+                <Link href={"/about-us"}>About Us</Link>
             </div>
             <div className={styles.logo}>
                 <Image

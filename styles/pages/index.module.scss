@@ -38,10 +38,26 @@
 .view {
   margin: auto;
   padding: 35px;
-  width: 50%;
+  width: 55%;
   text-align: center;
   position: relative;
   z-index: 1; /* Asegurarse de que el contenido esté sobre la imagen */
+
+  p {
+    text-align: left;
+  }
+
+  li {
+    text-align: left;
+  }
+
+  div {
+    p{
+      text-align: center;
+    }
+    
+  }
+
 }
 
 /* Media queries */
