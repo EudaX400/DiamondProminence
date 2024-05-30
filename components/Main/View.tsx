@@ -18,10 +18,10 @@ export const View = () => {
           </li>
         </ul>
 
-        <div>
-          <p>{t("view5")}</p>
-        </div>
         <LinkButton href={"/view"}>{t("view_tournament")}</LinkButton>
+        <div></div>
+ 
+        
       </main>
     </>
   );

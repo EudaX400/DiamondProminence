@@ -18,10 +18,11 @@ export const Join = () => {
             <p>{t("join5")}</p>
           </li>
         </ul>
-        <div>
-        <p>{t("join6")}</p>
-        </div>
+
         <LinkButton href={"/join"}>{t("join_tournament")}</LinkButton>
+        <div></div>
+
+        
       </main>
     </>
   );

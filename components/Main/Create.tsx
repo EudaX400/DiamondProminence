@@ -21,10 +21,12 @@ export const Create = () => {
           </li>
         </ul>
 
+        <LinkButton href={"/create"}>{t("create_tournament")}</LinkButton>
+
         <div>
           <p>{t("create8")}</p>
         </div>
-        <LinkButton href={"/create"}>{t("create_tournament")}</LinkButton>
+        
       </section>
     </>
   );

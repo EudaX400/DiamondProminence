@@ -8,8 +8,10 @@ import { Input } from "../components/Forms/Inputs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ButtonClick } from "../components/Buttons/ButtonClick";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const feed = await prisma.tournament.findMany({
     where: {},
     include: {
@@ -26,7 +28,10 @@ export const getStaticProps: GetStaticProps = async () => {
   }));
 
   return {
-    props: { feed: serializedFeed },
+    props: {
+      feed: serializedFeed,
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
     revalidate: 10,
   };
 };
@@ -36,6 +41,7 @@ type Props = {
 };
 
 const Main: React.FC<Props> = (props) => {
+  const { t } = useTranslation('common');
   const { data: session } = useSession();
   const router = useRouter();
   const [code, setCode] = useState("");
@@ -70,7 +76,7 @@ const Main: React.FC<Props> = (props) => {
 
   const handleJoin = async (tournament) => {
     if (!session) {
-      alert("You need to be logged in to join a tournament.");
+      alert(t('join_notLoggedIn'));
       return;
     }
 
@@ -96,7 +102,7 @@ const Main: React.FC<Props> = (props) => {
       });
 
       if (response.ok) {
-        setMessage("Successfully joined the tournament!");
+        setMessage(t('join_success'));
         setTimeout(() => {
           router.push(`/tournament/${tournamentId}`);
         }, 2000);
@@ -105,7 +111,7 @@ const Main: React.FC<Props> = (props) => {
         setMessage(error.error);
       }
     } catch (error) {
-      console.error("Error joining the tournament:", error);
+      console.error(t('join_error'), error);
     }
   };
 
@@ -133,32 +139,32 @@ const Main: React.FC<Props> = (props) => {
     <Layout>
       <div className={styles.customBackground}>
         <div className={styles.container}>
-          <h1 className={styles.title}>Join Tournament</h1>
+          <h1 className={styles.title}>{t('join_title')}</h1>
           <div className={styles.searchGroup}>
             <label className={styles.label} htmlFor="code">
-              Código del Torneo
+              {t('join_tournamentCode')}
             </label>
             <Input
               type="text"
               value={code}
               onChange={(e) => setCode(e.target.value)}
               name="code"
-              placeholder="Enter tournament code"
+              placeholder={t('join_enterCode')}
             />
           </div>
           <div className={styles.searchGroup}>
             <label className={styles.label} htmlFor="name">
-              Nombre del Torneo
+              {t('join_tournamentName')}
             </label>
             <Input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               name="name"
-              placeholder="Enter tournament name"
+              placeholder={t('join_enterName')}
             />
           </div>
-          <ButtonClick onClick={handleSearch}>Search</ButtonClick>
+          <ButtonClick onClick={handleSearch}>{t('join_search')}</ButtonClick>
           <div className={styles.line}></div>
           {message && <p className={styles.message}>{message}</p>}
           <div className={styles.results}>
@@ -173,22 +179,22 @@ const Main: React.FC<Props> = (props) => {
                 <h2>{tournament.title}</h2>
                 <p>{tournament.category}</p>
                 {tournament.private && (
-                  <p className={styles.private}>Private Tournament</p>
+                  <p className={styles.private}>{t('join_private')}</p>
                 )}
               </div>
             ))}
           </div>
-          {loading && <p>Loading...</p>}
+          {loading && <p>{t('join_loading')}</p>}
         </div>
         {selectedTournament && (
           <div className={styles.modal}>
             <div className={styles.modalContent}>
-              <h2>Enter Password for {selectedTournament.title}</h2>
+              <h2>{t('join_enterPassword')} {selectedTournament.title}</h2>
               <Input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
+                placeholder={t('join_password')}
                 name={"Password"}
               />
               <div className={styles.btn}>
@@ -197,10 +203,10 @@ const Main: React.FC<Props> = (props) => {
                     joinTournament(selectedTournament.id, password)
                   }
                 >
-                  Join
+                  {t('join_join')}
                 </ButtonClick>
                 <ButtonClick onClick={() => setSelectedTournament(null)}>
-                  Cancel
+                  {t('join_cancel')}
                 </ButtonClick>
               </div>
             </div>

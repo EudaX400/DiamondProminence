@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { GetStaticProps } from "next";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Layout from "../components/Layout";
 import styles from "../styles/pages/create.module.scss";
 import prisma from "../lib/prisma";
 import { TournamentProps } from "../components/TournamentPost";
 import { Input } from "../components/Forms/Inputs";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
   const feed = await prisma.tournament.findMany({
     where: { private: false },
     include: {
@@ -25,7 +27,10 @@ export const getStaticProps: GetStaticProps = async () => {
   }));
 
   return {
-    props: { feed: serializedFeed },
+    props: {
+      feed: serializedFeed,
+      ...(await serverSideTranslations(locale!, ['common'])),
+    },
     revalidate: 10,
   };
 };
@@ -35,6 +40,7 @@ type Props = {
 };
 
 const Main: React.FC<Props> = (props) => {
+  const { t } = useTranslation('common');
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [participants, setParticipants] = useState("");
@@ -94,10 +100,10 @@ const Main: React.FC<Props> = (props) => {
         const result = await response.json();
         router.push(`/tournament/${result.id}`);
       } else {
-        console.error("Error creating tournament");
+        console.error(t('create_error'));
       }
     } catch (error) {
-      console.error("Error creating tournament:", error);
+      console.error(t('create_error'));
     }
   };
 
@@ -111,37 +117,37 @@ const Main: React.FC<Props> = (props) => {
         <div className={styles.container}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles["form-group"]}>
-              <label className={styles.label}>Título</label>
+              <label className={styles.label}>{t('create_title')}</label>
               <Input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 name="title"
-                placeholder="Title"
+                placeholder={t('create_title_placeholder')}
               />
             </div>
             <div className={styles["form-group"]}>
-              <label className={styles.label}>Categoría</label>
+              <label className={styles.label}>{t('create_category')}</label>
               <Input
                 type="text"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 name="category"
-                placeholder="Category"
+                placeholder={t('create_category_placeholder')}
               />
             </div>
             <div className={styles["form-group"]}>
-              <label className={styles.label}>Número de Participantes</label>
+              <label className={styles.label}>{t('create_participants')}</label>
               <Input
                 type="number"
                 value={participants}
                 onChange={(e) => setParticipants(e.target.value)}
                 name="participants"
-                placeholder="Number of participants"
+                placeholder={t('create_participants_placeholder')}
               />
             </div>
             <div className={styles["form-group"]}>
-              <label className={styles.label}>Fecha de Inicio</label>
+              <label className={styles.label}>{t('create_startDate')}</label>
               <Input
                 type="date"
                 value={startDate}
@@ -150,7 +156,7 @@ const Main: React.FC<Props> = (props) => {
               />
             </div>
             <div className={styles["form-group"]}>
-              <label className={styles.label}>Fecha de Fin</label>
+              <label className={styles.label}>{t('create_endDate')}</label>
               <Input
                 type="date"
                 value={endDate}
@@ -159,7 +165,7 @@ const Main: React.FC<Props> = (props) => {
               />
             </div>
             <div className={styles["form-group"]}>
-              <label className={styles.label}>Descripción</label>
+              <label className={styles.label}>{t('create_description')}</label>
               <textarea
                 className={styles.textarea}
                 value={description}
@@ -175,23 +181,23 @@ const Main: React.FC<Props> = (props) => {
                   checked={isPrivate}
                   onChange={() => setIsPrivate(!isPrivate)}
                 />
-                Torneo Privado
+                {t('create_private')}
               </label>
             </div>
             {isPrivate && (
               <div className={styles["form-group"]}>
-                <label className={styles.label}>Contraseña</label>
+                <label className={styles.label}>{t('create_password')}</label>
                 <Input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   name="password"
-                  placeholder="Password"
+                  placeholder={t('create_password_placeholder')}
                 />
               </div>
             )}
             <button type="submit" className={styles.button}>
-              Crear Torneo
+              {t('create_button')}
             </button>
           </form>
         </div>

@@ -1,37 +1,32 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import styles from "../styles/pages/about-us.module.scss";
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 import Layout from "../components/Layout";
+import styles from "../styles/pages/about-us.module.scss";
 
 const AboutUs = () => {
+  const { t } = useTranslation('common');
+
   return (
     <Layout>
       <section className={`${styles.section} ${styles.customBackground}`}>
         <div className={`${styles.header}`}>
-          <h1>About Us</h1>
+          <h1>{t('aboutUs_title')}</h1>
         </div>
         <div className={styles.container}>
-          <p>
-            Welcome to our company! We are dedicated to providing the best
-            service in the industry. Our team is made up of talented and
-            passionate individuals who are committed to exceeding your
-            expectations.
-          </p>
-          <p>
-            We believe in the power of innovation and strive to bring you the
-            latest solutions to meet your needs. Our mission is to deliver
-            exceptional value to our customers through unparalleled quality
-            and service.
-          </p>
-          <p>
-            Thank you for choosing us. We look forward to serving you and
-            helping you achieve your goals.
-          </p>
+          <p>{t('aboutUs_paragraph1')}</p>
+          <p>{t('aboutUs_paragraph2')}</p>
+          <p>{t('aboutUs_paragraph3')}</p>
         </div>
       </section>
     </Layout>
   );
 };
+
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ['common'])),
+  },
+});
 
 export default AboutUs;
