@@ -139,6 +139,7 @@ export default function Profile({ user }) {
                   <ArrowUpIcon />
                 ) : (
                   <ArrowDownIcon />
+
                 )}
               </div>
               {openSections.createdTournament && (
@@ -159,6 +160,7 @@ export default function Profile({ user }) {
                   )}
                 </div>
               )}
+
             </div>
           </div>
           <div className={styles.buttons}>
@@ -188,7 +190,6 @@ export default function Profile({ user }) {
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions);
-  console.log("Session:", session);
 
   if (!session) {
     return {
@@ -216,7 +217,11 @@ export async function getServerSideProps(context) {
   const userData = {
     ...session.user,
     createdTournaments: user?.tournaments || [],
-    joinedTournaments: user?.participants.map((p) => p.tournament) || [],
+    joinedTournaments:
+      user?.participants.map((p) => ({
+        ...p.tournament,
+        position: p.position,
+      })) || [],
   };
 
   const cleanedUser = JSON.parse(

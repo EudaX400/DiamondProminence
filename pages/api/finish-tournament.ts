@@ -56,7 +56,6 @@ export default async function handler(req, res) {
   }
 }
 
-// Utilidad para obtener la fase actual
 function getCurrentPhase(matches) {
   if (matches.length === 0) return 1;
   const maxPhase = matches.reduce((max, match) => Math.max(max, match.phase), 1);

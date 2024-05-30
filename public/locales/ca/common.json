@@ -34,6 +34,7 @@
   "view2": "Filtra per preferències: Utilitza els nostres filtres avançats per trobar els tornejos que s'ajustin millor als teus interessos.",
   "view3": "Consulta els detalls: Obtén informació completa sobre cada torneig, la descripció i els participants.",
   "view4": "Explora la llista de tornejos: Navega per la nostra àmplia selecció de tornejos.",
+
   "view5": "*Aquestes funcionalitats estan disponibles per a tots els usuaris.",
 
   "aboutUs_title": "Sobre Nosaltres",
@@ -97,4 +98,5 @@
   "create_password_placeholder": "Introduïu la contrasenya",
   "create_button": "Crear el Torneig",
   "create_error": "S'ha produït un error en crear el torneig"
+
 }
