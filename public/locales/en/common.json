@@ -66,6 +66,7 @@
   "changePassword_button": "Change Password",
   "changePassword_success": "Password changed successfully",
   "changePassword_error": "Error changing password",
+  "changePassword_rules": "Password 6 characters max. One uppercase & one lowercase letter, and one number.",
 
   "join_title": "Join Tournament",
   "join_tournamentCode": "Tournament Code",
@@ -97,5 +98,45 @@
   "create_password": "Password",
   "create_password_placeholder": "Enter the password",
   "create_button": "Create Tournament",
-  "create_error": "An error occurred while creating the tournament"
+  "create_error": "An error occurred while creating the tournament",
+
+  "contact_title": "Contact",
+  "contact_subtitle": "Send us a message",
+  "contact_name": "Name",
+  "contact_email": "Email",
+  "contact_subject": "Subject",
+  "contact_message": "Message",
+  "contact_send": "Send",
+  "contact_sending": "Sending...",
+  "contact_success": "Email sent successfully.",
+  "contact_error": "Error sending email. Please try again.",
+  "contact_mail_error": "Please enter a valid email address.",
+
+  "prime_title": "Become a Prime User",
+  "prime_description": "Unlock exclusive features by becoming a prime user.",
+  "prime_free_title": "Free Plan",
+  "prime_prime_title": "Prime Plan",
+  "prime_free_features": [
+    "Join tournaments",
+    "View tournaments",
+    "Access limited support",
+    "Basic statistics"
+  ],
+  "prime_prime_features": [
+    "Join tournaments",
+    "View tournaments",
+    "Create tournaments",
+    "Administrate tournaments",
+    "Priority support",
+    "Advanced statistics",
+    "No ads"
+  ],
+  "prime_button": "Become Prime",
+  "prime_why_title": "Why Become a Prime User?",
+  "prime_why_description": "As a prime user, you get access to premium features that enhance your tournament experience. Create and manage your own tournaments, gain priority support, and enjoy an ad-free experience.",
+  "prime_support_title": "Support & Community",
+  "prime_support_description": "Join a community of dedicated gamers and tournament enthusiasts. Get help from our support team and participate in exclusive events.",
+  "prime_advanced_title": "Advanced Features",
+  "prime_advanced_description": "Track your progress with advanced statistics, and enjoy a smoother, more enriched user experience.",
+  "prime_error": "Error becoming prime"
 }
