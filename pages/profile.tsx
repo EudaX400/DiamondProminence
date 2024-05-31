@@ -65,7 +65,7 @@ export default function Profile({ user }) {
                 alt={`profile photo of ${user.name}`}
               />
               <p>{user.username}</p>
-              {!user.prime && (
+              {user.prime !== null && user.prime === false && (
                 <div className={styles.premium}>
                   <LinkButton href="/prime">Get Prime</LinkButton>
                 </div>
@@ -141,7 +141,7 @@ export default function Profile({ user }) {
                             {tournament.title}
                           </Link>
                           <p>
-                            {t("create_category")}: {tournament.category}
+                            {t("profile_category")}: {tournament.category}
                           </p>
                         </div>
                       ))}
@@ -177,7 +177,7 @@ export default function Profile({ user }) {
                             {tournament.title}
                           </Link>
                           <p>
-                            {t("create_category")}: {tournament.category}
+                            {t("profile_category")}: {tournament.category}
                           </p>
                         </div>
                       ))}
@@ -240,9 +240,14 @@ export async function getServerSideProps(context) {
     },
   });
 
+  if (!user) {
+    return {
+      notFound: true,
+    };
+  }
+
   const userData = {
     ...session.user,
-    prime: user.prime, // Asegurando que la propiedad prime esté incluida
     createdTournaments: user?.tournaments || [],
     joinedTournaments:
       user?.participants.map((p) => ({
