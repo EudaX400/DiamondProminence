@@ -1,3 +1,4 @@
+// contact.tsx
 import React, { useState } from "react";
 import Layout from "../components/Layout";
 import styles from "../styles/pages/contact.module.scss";
@@ -6,7 +7,7 @@ import { Textarea } from "../components/Forms/Textarea";
 import { useTranslation } from 'next-i18next';
 
 const Contact: React.FC = () => {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('common'); // Asegúrate de que el namespace 'common' esté siendo utilizado
   const [name, setName] = useState("");
   const [mail, setMail] = useState("");
   const [subject, setSubject] = useState("");
@@ -20,7 +21,6 @@ const Contact: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(mail)) {
       setMailError(t('contact_mail_error'));
@@ -44,16 +44,16 @@ const Contact: React.FC = () => {
       const result = await response.json();
 
       if (result.success) {
-        setSuccessMessage(t('contact_success'));
+        setSuccessMessage("Email sent successfully");
         setName("");
         setMail("");
         setSubject("");
         setMessage("");
       } else {
-        setErrorMessage(t('contact_error'));
+        setErrorMessage("Error sending email. Please try again");
       }
     } catch (error) {
-      setErrorMessage(t('contact_error'));
+      setErrorMessage("Please enter a valid email address");
     } finally {
       setIsSubmitting(false);
     }
@@ -62,11 +62,11 @@ const Contact: React.FC = () => {
   return (
     <Layout>
       <div className={styles.contactContainer}>
-        <h1 className={styles.title}>{t('contact_title')}</h1>
-        <h2 className={styles.subtitle}>{t('contact_subtitle')}</h2>
+        <h1 className={styles.title}>Contact</h1>
+        <h2 className={styles.subtitle}>Send us a message</h2>
         <form className={styles.form} onSubmit={handleSubmit}>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="name">{t('contact_name')}</label>
+            <label className={styles.label} htmlFor="name">Name</label>
             <Input
               type="text"
               name="name"
@@ -75,7 +75,7 @@ const Contact: React.FC = () => {
             />
           </div>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="mail">{t('contact_email')}</label>
+            <label className={styles.label} htmlFor="mail">Email</label>
             <Input
               type="text"
               name="mail"
@@ -85,7 +85,7 @@ const Contact: React.FC = () => {
             {mailError && <p className={styles.errorMessage}>{mailError}</p>}
           </div>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="subject">{t('contact_subject')}</label>
+            <label className={styles.label} htmlFor="subject">Subject</label>
             <Input
               type="text"
               name="subject"
@@ -94,7 +94,7 @@ const Contact: React.FC = () => {
             />
           </div>
           <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="message">{t('contact_message')}</label>
+            <label className={styles.label} htmlFor="message">Message</label>
             <Textarea
               id="message"
               name="message"
@@ -109,7 +109,7 @@ const Contact: React.FC = () => {
             className={styles.button}
             disabled={isSubmitting}
           >
-            {isSubmitting ? t('contact_sending') : t('contact_send')}
+            {isSubmitting ? "Sending..." : "Send"}
           </button>
           {successMessage && (
             <p className={styles.thankYouMessage}>{successMessage}</p>
