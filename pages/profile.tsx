@@ -141,7 +141,7 @@ export default function Profile({ user }) {
                             {tournament.title}
                           </Link>
                           <p>
-                            {t("profile_category")}: {tournament.category}
+                            {t("create_category")}: {tournament.category}
                           </p>
                         </div>
                       ))}
@@ -177,7 +177,7 @@ export default function Profile({ user }) {
                             {tournament.title}
                           </Link>
                           <p>
-                            {t("profile_category")}: {tournament.category}
+                            {t("create_category")}: {tournament.category}
                           </p>
                         </div>
                       ))}
@@ -242,6 +242,7 @@ export async function getServerSideProps(context) {
 
   const userData = {
     ...session.user,
+    prime: user.prime, // Asegurando que la propiedad prime esté incluida
     createdTournaments: user?.tournaments || [],
     joinedTournaments:
       user?.participants.map((p) => ({
