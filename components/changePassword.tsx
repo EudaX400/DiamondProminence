@@ -13,6 +13,14 @@ export default function ChangePassword({ email, closePassword }) {
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
+
+    // Validación de contraseña
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      setPasswordChangeMessage(t('changePassword_rules'));
+      return;
+    }
+
     if (newPassword !== confirmPassword) {
       setPasswordChangeMessage(t('changePassword_error'));
       return;

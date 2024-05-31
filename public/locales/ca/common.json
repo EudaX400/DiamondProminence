@@ -66,6 +66,7 @@
   "changePassword_button": "Canviar Contrasenya",
   "changePassword_success": "Contrasenya canviada correctament",
   "changePassword_error": "Error en canviar la contrasenya",
+  "changePassword_rules": "Contrasenya màxim 6 caràct. Una lletra majúscula, una lletra minúscula i un número.",
 
   "join_title": "Unir-se al Torneig",
   "join_tournamentCode": "Codi del Torneig",
@@ -97,6 +98,45 @@
   "create_password": "Contrasenya",
   "create_password_placeholder": "Introduïu la contrasenya",
   "create_button": "Crear el Torneig",
-  "create_error": "S'ha produït un error en crear el torneig"
+  "create_error": "S'ha produït un error en crear el torneig",
 
+  "contact_title": "Contacte",
+  "contact_subtitle": "Envia'ns un missatge",
+  "contact_name": "Nom",
+  "contact_email": "Correu electrònic",
+  "contact_subject": "Assumpte",
+  "contact_message": "Missatge",
+  "contact_send": "Enviar",
+  "contact_sending": "Enviant...",
+  "contact_success": "Correu enviat amb èxit.",
+  "contact_error": "Error enviant el correu. Si us plau, intenta novament.",
+  "contact_mail_error": "Si us plau, introdueix un correu electrònic vàlid.",
+
+  "prime_title": "Converteix-te en usuari Prime",
+  "prime_description": "Desbloqueja funcions exclusives convertint-te en usuari prime.",
+  "prime_free_title": "Pla gratuït",
+  "prime_prime_title": "Pla Prime",
+  "prime_free_features": [
+    "Unir-se a tornejos",
+    "Veure tornejos",
+    "Accés a suport limitat",
+    "Estadístiques bàsiques"
+  ],
+  "prime_prime_features": [
+    "Unir-se a tornejos",
+    "Veure tornejos",
+    "Crear tornejos",
+    "Administrar tornejos",
+    "Suport prioritari",
+    "Estadístiques avançades",
+    "Sense anuncis"
+  ],
+  "prime_button": "Converteix-te en Prime",
+  "prime_why_title": "Per què convertir-se en usuari Prime?",
+  "prime_why_description": "Com a usuari prime, tens accés a funcions premium que milloren la teva experiència en els tornejos. Crea i gestiona els teus propis tornejos, obté suport prioritari i gaudeix d'una experiència sense anuncis.",
+  "prime_support_title": "Suport i comunitat",
+  "prime_support_description": "Uneix-te a una comunitat de jugadors dedicats i entusiastes dels tornejos. Rep ajuda del nostre equip de suport i participa en esdeveniments exclusius.",
+  "prime_advanced_title": "Funcions avançades",
+  "prime_advanced_description": "Fes un seguiment del teu progrés amb estadístiques avançades i gaudeix d'una experiència d'usuari més fluïda i enriquida.",
+  "prime_error": "Error en convertir-se en prime"
 }

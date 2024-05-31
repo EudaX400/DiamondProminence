@@ -65,6 +65,7 @@
   "changePassword_button": "Cambiar Contraseña",
   "changePassword_success": "Contraseña cambiada exitosamente",
   "changePassword_error": "Error al cambiar la contraseña",
+  "changePassword_rules": "Contraseña máximo  6 caract. Una letra mayúscula, una letra minúscula y un número.",
 
   "join_title": "Unirse al Torneo",
   "join_tournamentCode": "Código del Torneo",
@@ -96,5 +97,45 @@
   "create_password": "Contraseña",
   "create_password_placeholder": "Introduce la contraseña",
   "create_button": "Crear Torneo",
-  "create_error": "Ocurrió un error al crear el torneo"
+  "create_error": "Ocurrió un error al crear el torneo",
+
+  "contact_title": "Contacto",
+  "contact_subtitle": "Envíanos un mensaje",
+  "contact_name": "Nombre",
+  "contact_email": "Correo electrónico",
+  "contact_subject": "Asunto",
+  "contact_message": "Mensaje",
+  "contact_send": "Enviar",
+  "contact_sending": "Enviando...",
+  "contact_success": "Correo enviado exitosamente.",
+  "contact_error": "Error enviando el correo. Por favor intenta nuevamente.",
+  "contact_mail_error": "Por favor ingresa un correo electrónico válido.",
+
+  "prime_title": "Conviértete en usuario Prime",
+  "prime_description": "Desbloquea funciones exclusivas convirtiéndote en usuario prime.",
+  "prime_free_title": "Plan gratuito",
+  "prime_prime_title": "Plan Prime",
+  "prime_free_features": [
+    "Unirse a torneos",
+    "Ver torneos",
+    "Acceso a soporte limitado",
+    "Estadísticas básicas"
+  ],
+  "prime_prime_features": [
+    "Unirse a torneos",
+    "Ver torneos",
+    "Crear torneos",
+    "Administrar torneos",
+    "Soporte prioritario",
+    "Estadísticas avanzadas",
+    "Sin anuncios"
+  ],
+  "prime_button": "Conviértete en Prime",
+  "prime_why_title": "¿Por qué convertirse en usuario Prime?",
+  "prime_why_description": "Como usuario prime, obtienes acceso a funciones premium que mejoran tu experiencia en los torneos. Crea y gestiona tus propios torneos, obtén soporte prioritario y disfruta de una experiencia sin anuncios.",
+  "prime_support_title": "Soporte y comunidad",
+  "prime_support_description": "Únete a una comunidad de jugadores dedicados y entusiastas de los torneos. Recibe ayuda de nuestro equipo de soporte y participa en eventos exclusivos.",
+  "prime_advanced_title": "Funciones avanzadas",
+  "prime_advanced_description": "Sigue tu progreso con estadísticas avanzadas y disfruta de una experiencia de usuario más fluida y enriquecida.",
+  "prime_error": "Error al convertirse en prime"
 }

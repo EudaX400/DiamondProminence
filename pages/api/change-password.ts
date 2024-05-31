@@ -20,6 +20,14 @@ export default async function changePassword(req, res) {
     return res.status(400).json({ message: "Missing fields" });
   }
 
+  // Validación de contraseña
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
+  if (!passwordRegex.test(newPassword)) {
+    return res.status(400).json({
+      message: "Password 6 characters max. and one uppercase letter, one lowercase letter, and one number.",
+    });
+  }
+
   // Obtener el usuario de la base de datos
   const user = await prisma.user.findUnique({
     where: { email },
