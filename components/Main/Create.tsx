@@ -21,6 +21,7 @@ export const Create = () => {
           </li>
         </ul>
 
+
         <LinkButton href={"/create"}>{t("create_tournament")}</LinkButton>
 
         <div>

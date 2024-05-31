@@ -12,7 +12,6 @@ export default async function handle(req, res) {
 
     const userId = session.user.id;
 
-    // Verificar si el usuario es prime
     const user = await prisma.user.findUnique({
       where: { id: userId },
     });

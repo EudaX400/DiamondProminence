@@ -13,8 +13,6 @@ export default async function handle(req, res) {
 
     const { tournamentId } = req.body;
 
-    console.log("Tournament ID received:", tournamentId); // Log para verificar el ID del torneo recibido
-
     try {
       const tournament = await prisma.tournament.findUnique({
         where: { id: tournamentId },
@@ -39,8 +37,6 @@ export default async function handle(req, res) {
         return res.status(400).json({ error: "Not enough participants" });
       }
 
-      console.log("Participants:", participants); // Log para verificar los participantes
-
       const shuffledParticipants = participants.sort(() => Math.random() - 0.5);
       const matches = [];
 
@@ -53,14 +49,12 @@ export default async function handle(req, res) {
               player2Id: shuffledParticipants[i + 1].userId,
               player1Score: 0,
               player2Score: 0,
-              phase: 1, // Inicializamos la fase en 1
+              phase: 1, 
             },
           });
           matches.push(match);
         }
       }
-
-      console.log("Matches created:", matches); // Log para verificar los partidos creados
 
       res.status(200).json({ message: "Matches created successfully", matches });
     } catch (error) {

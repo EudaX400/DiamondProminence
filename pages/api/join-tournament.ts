@@ -15,16 +15,26 @@ export default async function handle(req, res) {
     try {
       const tournament = await prisma.tournament.findUnique({
         where: { id: tournamentId },
+        include: {
+          participants: true,  // Include participants to check their count
+        },
       });
 
       if (!tournament) {
         return res.status(404).json({ error: "Tournament not found" });
       }
 
+      // Check if the tournament is private and if the password is correct
       if (tournament.private && tournament.privatePassword !== password) {
         return res.status(403).json({ error: "Incorrect password" });
       }
 
+      // Check if the tournament is full
+      if (tournament.participants.length >= tournament.numPlayers) {
+        return res.status(403).json({ error: "Tournament is full" });
+      }
+
+      // Add the user to the tournament participants
       const participant = await prisma.tournamentParticipant.create({
         data: {
           tournamentId,

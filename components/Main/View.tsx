@@ -21,7 +21,7 @@ export const View = () => {
         <LinkButton href={"/view"}>{t("view_tournament")}</LinkButton>
         <div></div>
  
-        
+       
       </main>
     </>
   );
